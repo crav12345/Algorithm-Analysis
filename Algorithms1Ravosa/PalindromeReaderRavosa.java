@@ -26,6 +26,7 @@ public class PalindromeReaderRavosa {
 		StackRavosa myStack = new StackRavosa();
 		QueueRavosa myQueue = new QueueRavosa();
 		int charIndex = 0;
+		int palindromeCount = 0;
 	
 		//Read in file into the array
 		try
@@ -75,8 +76,13 @@ public class PalindromeReaderRavosa {
 							}//if
 							charIndex++;
 						}//while
+						if(compareWords(myStack, myQueue)) {
+							palindromeCount++;
+							System.out.println(palindromeCount + ". " + itemsArray[counter]);
+						}//if
 						charIndex = 0;
 					}//for
+					System.out.println();
 					break;//case 2
 				
 				case 0:
@@ -90,4 +96,12 @@ public class PalindromeReaderRavosa {
 		}//while
 		keyboard.close();
 	}//main
+	
+	public static boolean compareWords(StackRavosa magicStack, QueueRavosa magicQueue) {
+		boolean ans = false;
+		if(magicStack.pop() == magicQueue.dequeue())
+			ans = true;
+		return ans;
+	}//compareWords
+	
 }//PalindromeReaderRavosa
