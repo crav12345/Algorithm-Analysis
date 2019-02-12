@@ -42,4 +42,12 @@ public class QueueRavosa {
 		myFront = myFront.getNext();
 		return ans;
 	}//dequeue
+	
+	public void printDetails() {
+		NodeRavosa current = myFront;
+		while (current != null) {
+			System.out.print(current.getData());
+			current = current.getNext();
+		}//while
+	}//printDetails
 }//QueueRavosa

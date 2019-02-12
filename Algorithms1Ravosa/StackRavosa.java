@@ -37,4 +37,12 @@ public class StackRavosa {
 		}//if
 		return ans;
 	}//pop
+	
+	public void printDetails() {
+		NodeRavosa current = myTop;
+		while (current != null) {
+			System.out.print(current.getData());
+			current = current.getNext();
+		}//while
+	}//printDetails
 }//StackRavosa
