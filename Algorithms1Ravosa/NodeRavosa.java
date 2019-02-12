@@ -9,29 +9,29 @@
 //
 
 public class NodeRavosa {
-	private String myItem;
+	private char myData;
 	private NodeRavosa myNext;
 	
 	public NodeRavosa() {
-		myItem = null;
+		myData = '\u0000';
 		myNext = null;
 	}//null constructor
 	
-	public NodeRavosa(String newItem) {
-		myItem = newItem;
+	public NodeRavosa(char newData) {
+		myData = newData;
 		myNext = null;
 	}//full constructor
 	
-	public void setItem(String newItem) {
-		myItem = newItem;
+	public void setData(char newData) {
+		myData = newData;
 	}//setData
 	
 	public void setNext(NodeRavosa newNext) {
 		myNext = newNext;
 	}//setNext
 	
-	public String getItem() {
-		return myItem;
+	public char getData() {
+		return myData;
 	}//getData
 	
 	public NodeRavosa getNext() {

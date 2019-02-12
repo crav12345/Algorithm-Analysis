@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class PalindromeReaderRavosa {
 
 	public static void main(String[] args) {
-		
+		//Variables
 		String fileName = "magicItems.txt";
 		File magicFile = new File(fileName);
 		String line = null;
@@ -23,53 +23,67 @@ public class PalindromeReaderRavosa {
 		int userChoice = 0;
 		String[] itemsArray = new String[666];
 		int counter = 0;
+		StackRavosa myStack = new StackRavosa();
+		QueueRavosa myQueue = new QueueRavosa();
+		int charIndex = 0;
 	
+		//Read in file into the array
 		try
 		{
 			//create a Scanner object to read from the file
 			Scanner magicItems = new Scanner(magicFile);
-		
 			//An exception is thrown if you try to read past the end-of-file
 			while(magicItems.hasNext())
 			{
 				//Read the next line of input
 				line = magicItems.nextLine();
-				itemsArray[counter] = line;
+				itemsArray[counter] = line.toLowerCase();
 				counter++;
 			}//while
 			magicItems.close();
 		}//try
-	
 		catch(Exception ex)
 		{
 			System.out.println("Oops, something went wrong!");
 		}//catch
 		
+		//Loop the file until the user quits the program
 		while (menu == true) {
-		
 			System.out.println("Select an option from the menu list by " + 
 					"entering the corresponding key:");
 			System.out.println("1. Print list of magic items");
-			System.out.println("2. List palindromes with stack implementation");
-			System.out.println("3. List palindromes with queue implementation");
+			System.out.println("2. List palindromes");
 			System.out.println("0. Exit program");
 			userChoice = keyboard.nextInt();
 			
+			//Execute function based on user selection
 			switch (userChoice) {
+				//Print contents of magic items array
 				case 1:
 					for (counter = 0; counter < 666; counter++) {
 						System.out.println((counter+1) + ". " +itemsArray[counter]);
 					}//for
 					System.out.println();
-					break;
+					break;//case 1
+					
 				case 2:
-					break;
-				case 3:
-					break;
+					for (counter = 0; counter < 666; counter++) {
+						while (charIndex < itemsArray[counter].length()) {
+							if (itemsArray[counter].charAt(charIndex) != ' ') {
+								myStack.push(itemsArray[counter].charAt(charIndex));
+								myQueue.enqueue(itemsArray[counter].charAt(charIndex));
+							}//if
+							charIndex++;
+						}//while
+						charIndex = 0;
+					}//for
+					break;//case 2
+				
 				case 0:
 					System.out.println("Goodbye!");
 					menu = false;
-					break;
+					break;//case 0
+					
 				default:
 					System.out.println("Invalid input!");
 			}//switch
