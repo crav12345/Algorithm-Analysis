@@ -28,6 +28,7 @@ public class PalindromeReaderRavosa {
 		int charIndex = 0;
 		int matchCount = -1;
 		int palindromeCount = 0;
+		int spaceCount = 0;
 	
 		//Read in file into the array
 		try
@@ -75,6 +76,8 @@ public class PalindromeReaderRavosa {
 								myStack.push(itemsArray[counter].charAt(charIndex));
 								myQueue.enqueue(itemsArray[counter].charAt(charIndex));
 							}//if
+							else
+								spaceCount ++;
 							charIndex++;
 						}//while
 						while (myStack.isEmpty() != true) {
@@ -82,12 +85,13 @@ public class PalindromeReaderRavosa {
 								matchCount++;
 							}//if
 						}//while
-						if (matchCount == charIndex) {
+						if ((matchCount + spaceCount) == charIndex) {
 							palindromeCount++;
 							System.out.println(palindromeCount + ". " + itemsArray[counter]);
 						}//if
 						charIndex = 0;
 						matchCount = 0;
+						spaceCount = 0;
 					}//for
 					System.out.println();
 					break;//case 2
