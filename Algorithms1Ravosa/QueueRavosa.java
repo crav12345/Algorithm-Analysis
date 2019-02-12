@@ -26,9 +26,15 @@ public class QueueRavosa {
 	
 	public void enqueue(char newLetter) {
 		NodeRavosa enqueue = new NodeRavosa();
-		myRear.setNext(enqueue);
-		myRear = enqueue;
 		enqueue.setData(newLetter);
+		if (isEmpty()) {
+			myFront = enqueue;
+			myRear = enqueue;
+		}//if
+		else {
+			myRear.setNext(enqueue);
+			myRear = enqueue;
+		}//else
 	}//enqueue
 	
 	public char dequeue() {
