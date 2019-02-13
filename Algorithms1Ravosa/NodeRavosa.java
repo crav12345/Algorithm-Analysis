@@ -9,9 +9,11 @@
 //
 
 public class NodeRavosa {
+	//Declare necessary variables for NodeRavosa objects
 	private char myData;
 	private NodeRavosa myNext;
 	
+	//Initialize variables with constructors
 	public NodeRavosa() {
 		myData = '\u0000';
 		myNext = null;
@@ -22,6 +24,8 @@ public class NodeRavosa {
 		myNext = null;
 	}//full constructor
 	
+	//Getter and setter methods for each variable are used to update values of
+	//instances of NodeRavosa
 	public void setData(char newData) {
 		myData = newData;
 	}//setData
@@ -37,5 +41,4 @@ public class NodeRavosa {
 	public NodeRavosa getNext() {
 		return myNext;
 	}//getNext
-	
 }//NodeRavosa
