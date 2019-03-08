@@ -46,8 +46,18 @@ public class OrganizerRavosa {
 		}//catch
 				
 //----------------------END OF READING IN FILE--------------------------------				
+			
 		
-		
+		//Here you should make a menu asking whether he wants to see
+		//sorting, searching, or hashing methods. Based on input,
+		//go to that separate menu and let him choose one to use.
+		//You should terminate the program after that so the array isn't
+		//still sorted.
+	
+		//Either that or you could make a copy of the array each time
+		//you do a method that gets tossed after each function runs!!!
+		//You won't need to restart the program!
+				
 	}//main
 	
 	
@@ -79,5 +89,31 @@ public class OrganizerRavosa {
 		System.out.println("Comparisons in selection sort: " + comparisons);
 		
 	}//selectionSort
+	
+	public static void insertionSort(String[] myArray) {
+		int i = 1;
+		int length = myArray.length;
+		String key = "";
+		int j = 0;
+		int comparisons = 0;
+		
+		for (i = 1; i < length; i++) {
+			key = myArray[i];
+			j = i-1;
+			while (j >= 0 && (myArray[j].compareTo(key) > 0)) {
+				myArray[j + 1] = myArray[j];
+				j = j - 1;
+				comparisons++;
+			}//while
+			myArray[j + 1] = key;
+		}//for
+		
+		for (i = 0; i < 666; i++)
+			System.out.println((i+1) + ". " + myArray[i]);
+		
+		System.out.println();
+		System.out.println("Comparisons in insertion sort: " + comparisons);
+		
+	}//insertionSort
 	
 }//OrganizerRavosa
