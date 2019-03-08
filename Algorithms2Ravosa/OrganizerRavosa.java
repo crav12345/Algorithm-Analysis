@@ -14,13 +14,13 @@ import java.util.*;
 public class OrganizerRavosa {
 
 	public static void main(String[] args) {
-		//Read file variables
+		//Variables for reading file
 		String fileName = "magicItems.txt";
 		File magicFile = new File(fileName);
 		String line = null;
 		String[] itemsArray = new String[666];
 		int counter = 0;
-
+		
 //---------------------END OF VARIABLES---------------------------------------
 				
 		//Read "magic items" into the array
@@ -46,9 +46,38 @@ public class OrganizerRavosa {
 		}//catch
 				
 //----------------------END OF READING IN FILE--------------------------------				
-		for (int i = 0; i < 666; i++)
-			System.out.println((i+1) + ". " + itemsArray[i]);
+		
 		
 	}//main
+	
+	
+	public static void selectionSort(String[] myArray) {
+		int comparisons = 0;
+		int length = myArray.length;
+		int i = 0;
+		int smallPos = 0;
+		int j = 0;
+		String temp = "";
+		
+		for (i = 0; i <= length-2; i++) {
+			smallPos = i;
+			for (j = i + 1; j < length; j++) {
+				if (myArray[j].compareTo(myArray[smallPos]) < 0) {
+					smallPos = j;
+					comparisons++;
+				}//if
+			}//inner for
+			temp = myArray[smallPos];
+			myArray[smallPos] = myArray[i];
+			myArray[i] = temp;
+		}//outer for
+		
+		for (i = 0; i < 666; i++)
+			System.out.println((i+1) + ". " + myArray[i]);
+		
+		System.out.println();
+		System.out.println("Comparisons in selection sort: " + comparisons);
+		
+	}//selectionSort
 	
 }//OrganizerRavosa
