@@ -116,4 +116,22 @@ public class OrganizerRavosa {
 		
 	}//insertionSort
 	
+	/*public static void mergeSort(String[] myArray) {
+		int length = myArray.length;
+		String[] ans;
+		String[] l;
+		String[] r;
+		
+		if (length <= 1) {
+			ans = myArray;
+		}//if
+		
+		l = mergeSort();
+		r = mergeSort((myArray[(length-2)]));
+	}//mergeSort*/
+	
+	public static void quickSort() {
+		
+	}//quickSort
+	
 }//OrganizerRavosa
