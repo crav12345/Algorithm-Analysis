@@ -66,16 +66,16 @@ public class OrganizerRavosa {
 		for(i = 0; i < itemsArray.length; i++)
 			quickArray[i] = itemsArray[i];
 		
-		Scanner input = new Scanner(System.in);
-		
 		System.out.println("-----COMPARISONS IN EACH SORT-----");
 		selectionSort(selectionArray);
 		insertionSort(insertionArray);
 		mergeSort(mergeArray);
-		quickSort(quickArray);
+		System.out.println("Quick Sort: " + quickSort(quickArray, 0, 665));
 		System.out.println("----------------------------------");
-			
-		/*
+		
+		
+		Scanner input = new Scanner(System.in);
+		
 		while (menu == true) {
 			System.out.println("Would you like to print the sorted array?");
 			System.out.println("Type 'YES' to print, 'NO' to exit");
@@ -84,7 +84,7 @@ public class OrganizerRavosa {
 			switch(choice) {
 			case "YES":
 				for(i = 0; i < selectionArray.length; i++)
-					System.out.println((i + 1) + ". " + selectionArray[i]);
+					System.out.println((i + 1) + ". " + quickArray[i]);
 				break;
 			case "NO":
 				System.out.println("Goodbye!");
@@ -97,7 +97,6 @@ public class OrganizerRavosa {
 		}//while
 		
 		input.close();
-		//*/
 	}//main
 	
 	
@@ -192,42 +191,36 @@ public class OrganizerRavosa {
         return comparisons;
 	}//merge
 	
-	public static String[] quickSort(String[] myArray) {
-		int n = myArray.length;
-		String pivot = "";
-		Random r = new Random();
-		int low = 0;
-		int high = myArray.length;
-		int result = r.nextInt(high-low) + low;
-		int i = 0;
-		int counterLeft = -1;
-		int counterRight = -1;
+	public static int quickSort(String[] myArray, int lowIndex, int highIndex) {
+		String pivot = myArray[lowIndex + (highIndex - lowIndex)/2];
+		String temp = "";
+		int i = lowIndex;
+		int j = highIndex;
+		int comparisons = 0;
 		
-		if (n<=1) {
-			return myArray;
-		}//if
-		
-		pivot = myArray[result];
-		
-		String[] left = new String[n/2];
-		String[] right = new String[n - left.length];
-		
-		for(i = 0; i < myArray.length; i++) {
-			if (myArray[i].compareTo(pivot) < 0) {
-				counterLeft++;
-				left[counterLeft] = myArray[i];
+		while (i <= j) {
+			while (myArray[i].compareTo(pivot) < 0) {
+				i++;
+				comparisons++;
+			}//while
+			while (myArray[j].compareTo(pivot) > 0) {
+				j--;
+				comparisons++;
+			}//while
+			if (i <= j) {
+				temp = myArray[i];
+				myArray[i] = myArray[j];
+				myArray[j] = temp;
+				i++;
+				j--;
 			}//if
-			else if(myArray[i].compareTo(pivot) > 0) {
-				counterRight++;
-				right[counterRight] = myArray[i];
-			}//else if
-		}//for
+		}//while
+		if(lowIndex < j)
+			comparisons = comparisons + quickSort(myArray, lowIndex, j);
+		if(i < highIndex)
+			comparisons = comparisons + quickSort(myArray, i, highIndex);
 		
-		quickSort(left);
-		quickSort(right);
-		
-		System.out.println("Aye lmao");
-		return myArray;
-	}//quickSort
+		return comparisons;
+	}//while
 	
 }//OrganizerRavosa
