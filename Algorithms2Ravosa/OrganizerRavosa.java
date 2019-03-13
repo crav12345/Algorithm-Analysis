@@ -20,13 +20,12 @@ public class OrganizerRavosa {
 		String line = null;
 		String[] itemsArray = new String[666];
 		int counter = 0;
-		int mergeComparisons = 0;
 		int i = 0;
 		String[] selectionArray = new String[666];
 		String[] insertionArray = new String[666];
 		String[] mergeArray = new String[666];
 		String[] quickArray = new String[666];
-		boolean menu = true;
+		//boolean menu = true;
 		
 //---------------------END OF VARIABLES---------------------------------------
 				
@@ -69,9 +68,11 @@ public class OrganizerRavosa {
 		System.out.println("-----COMPARISONS IN EACH SORT-----");
 		selectionSort(selectionArray);
 		insertionSort(insertionArray);
-		mergeSort(mergeArray);
+		System.out.println("Merge Sort: " + mergeSort(mergeArray, 0, 665));
 		System.out.println("Quick Sort: " + quickSort(quickArray, 0, 665));
 		System.out.println("----------------------------------");
+		
+//---------------------------END OF SORTS--------------------------------------
 		
 		Random rand = new Random();
 		int randomValue = 0;
@@ -84,10 +85,10 @@ public class OrganizerRavosa {
 		
 		//linearSearch(quickArray, randomsArray);
 		
-		for (i = 0; i < randomsArray.length; i++)
-			System.out.println("Found: " + binarySearch(selectionArray, 0, 665, randomsArray[i]));
-	}//main
+		//for (i = 0; i < randomsArray.length; i++)
+		//	System.out.println("Found: " + binarySearch(selectionArray, 0, 665, randomsArray[i]));
 	
+	}//main
 	
 	public static void selectionSort(String[] myArray) {
 		int comparisons = 0;
@@ -134,49 +135,64 @@ public class OrganizerRavosa {
 		System.out.println("Insertion Sort: " + comparisons);
 	}//insertionSort
 		
-	public static String[] mergeSort(String[] myArray) {
-		int length = myArray.length;
+	public static int mergeSort(String[] myArray, int left, int right) {
 		int comparisons = 0;
-		
-		if (length > 1) {
-			String[] listLeft = new String[length/2];
-			String[] listRight = new String[length - listLeft.length];
-        	System.arraycopy(myArray, 0, listLeft, 0, listLeft.length);
-        	System.arraycopy(myArray, listLeft.length, listRight, 0, listRight.length);
-        
-			mergeSort(listLeft);
-			mergeSort(listRight);
-			
-			comparisons = comparisons + merge(myArray, listLeft, listRight);
+		if (left < right) {
+			int mid = (left + right)/2;
+			mergeSort(myArray, left, mid);
+			mergeSort(myArray, mid + 1, right);
+			 
+			comparisons = merge(myArray, left, mid, right);
 		}//if
 		
-		if (length == 666)
-			System.out.println("Merge Sort: " + comparisons);
-		return myArray;
+		return comparisons;
 	}//mergeSort
 	
-	public static int merge(String[] myArray, String[] listLeft, String[] listRight) {
-		int indexLeft = 0;
-		int indexRight = 0;
-		int indexOfMerged = 0;
+	public static int merge(String[] myArray, int left, int mid, int right) {
+		int i;
+		int j;
+		int k;
+		int n1 = mid - left + 1;
+		int n2 = right - mid;
 		int comparisons = 0;
+		String[] arrayLeft = new String[n1];
+		String[] arrayRight = new String[n2];
 		
-		while (indexLeft < listLeft.length && indexRight < listRight.length) {
-			if(listLeft[indexLeft].compareTo(listRight[indexRight]) < 0) {
-				myArray[indexOfMerged] = listLeft[indexLeft];
-				indexLeft++;
+		for (i = 0; i < n1; i++)
+			arrayLeft[i] = myArray[left + i];
+		for (j = 0; j < n2; j++)
+			arrayRight[j] = myArray[mid + 1 + j];
+		
+		i = 0;
+		j = 0;
+		k = left;
+		
+		while (i < n1 && j < n2) {
+			if(arrayLeft[i].compareTo(arrayRight[j]) <= 0) {
+				myArray[k] = arrayLeft[i];
+				i++;
+				comparisons++;
 			}//if
 			else {
-				myArray[indexOfMerged] = listRight[indexRight];
-				indexRight++;
+				myArray[k] = arrayRight[j];
+				j++;
+				comparisons++;
 			}//else
-			indexOfMerged++;
-			comparisons++;
+			k++;
 		}//while
 		
-		System.arraycopy(listLeft, indexLeft, myArray, indexOfMerged, listLeft.length - indexLeft);
-        System.arraycopy(listRight, indexRight, myArray, indexOfMerged, listRight.length - indexRight);
-        
+		while(i < n1) {
+			myArray[k] = arrayLeft[i];
+			i++;
+			k++;
+		}//while
+		
+		while (j < n2) {
+			myArray[k] = arrayRight[j];
+			j++;
+			k++;
+		}//while
+		
         return comparisons;
 	}//merge
 	
@@ -235,6 +251,7 @@ public class OrganizerRavosa {
 		System.out.println("Linear search's average # of comparisons: " + avg);
 	}//linearSearch
 
+	/*
 	public static boolean binarySearch(String[] myArray, int startIndex, int stopIndex, String target) {
 		int midpoint = ((startIndex+stopIndex)/2);
 		if (startIndex > stopIndex) {
@@ -249,4 +266,5 @@ public class OrganizerRavosa {
 			binarySearch(myArray, midpoint + 1, stopIndex, target);
 		
 	}//binarySearch
+	*/
 }//OrganizerRavosa
