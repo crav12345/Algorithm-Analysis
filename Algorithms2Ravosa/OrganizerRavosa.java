@@ -46,18 +46,12 @@ public class OrganizerRavosa {
 		}//catch
 				
 //----------------------END OF READING IN FILE--------------------------------				
-			
 		
-		//Here you should make a menu asking whether he wants to see
-		//sorting, searching, or hashing methods. Based on input,
-		//go to that separate menu and let him choose one to use.
-		//You should terminate the program after that so the array isn't
-		//still sorted.
-	
-		//Either that or you could make a copy of the array each time
-		//you do a method that gets tossed after each function runs!!!
-		//You won't need to restart the program!
-				
+		mergeSort(itemsArray);
+		
+		for(int i = 0; i < itemsArray.length; i++)
+			System.out.println((i+1) + ". " + itemsArray[i]);
+		
 	}//main
 	
 	
@@ -90,6 +84,7 @@ public class OrganizerRavosa {
 		
 	}//selectionSort
 	
+	
 	public static void insertionSort(String[] myArray) {
 		int i = 1;
 		int length = myArray.length;
@@ -116,19 +111,50 @@ public class OrganizerRavosa {
 		
 	}//insertionSort
 	
-	/*public static void mergeSort(String[] myArray) {
+	
+	public static String[] mergeSort(String[] myArray) {
 		int length = myArray.length;
-		String[] ans;
-		String[] l;
-		String[] r;
+		int comparisons = 0;
 		
-		if (length <= 1) {
-			ans = myArray;
+		if (length <= 1) { 
+			return myArray;
 		}//if
+		String[] listLeft = new String[length/2];
+		String[] listRight = new String[length - listLeft.length];
+        System.arraycopy(myArray, 0, listLeft, 0, listLeft.length);
+        System.arraycopy(myArray, listLeft.length, listRight, 0, listRight.length);
+        
+		mergeSort(listLeft);
+		mergeSort(listRight);
 		
-		l = mergeSort();
-		r = mergeSort((myArray[(length-2)]));
-	}//mergeSort*/
+		merge(myArray, listLeft, listRight);
+		
+		return myArray;
+	}//mergeSort
+	
+	public static int merge(String[] myArray, String[] listLeft, String[] listRight) {
+		int indexLeft = 0;
+		int indexRight = 0;
+		int indexOfMerged = 0;
+		int comparisons = 0;
+		
+		while (indexLeft < listLeft.length && indexRight < listRight.length) {
+			if(listLeft[indexLeft].compareTo(listRight[indexRight]) < 0) {
+				myArray[indexOfMerged] = listLeft[indexLeft];
+				indexLeft++;
+				comparisons++;
+			}//if
+			else {
+				myArray[indexOfMerged] = listRight[indexRight];
+				indexRight++;
+			}//else
+			indexOfMerged++;
+		}//while
+		System.arraycopy(listLeft, indexLeft, myArray, indexOfMerged, listLeft.length - indexLeft);
+        System.arraycopy(listRight, indexRight, myArray, indexOfMerged, listRight.length - indexRight);
+        
+        return comparisons;
+	}//merge
 	
 	public static void quickSort() {
 		
