@@ -73,30 +73,19 @@ public class OrganizerRavosa {
 		System.out.println("Quick Sort: " + quickSort(quickArray, 0, 665));
 		System.out.println("----------------------------------");
 		
+		Random rand = new Random();
+		int randomValue = 0;
+		String[] randomsArray = new String[42];
 		
-		Scanner input = new Scanner(System.in);
+		for (i = 0; i < randomsArray.length; i++) {
+			randomValue = rand.nextInt(666);
+			randomsArray[i] = quickArray[randomValue];
+		}//for
 		
-		while (menu == true) {
-			System.out.println("Would you like to print the sorted array?");
-			System.out.println("Type 'YES' to print, 'NO' to exit");
+		//linearSearch(quickArray, randomsArray);
 		
-			String choice = input.nextLine();
-			switch(choice) {
-			case "YES":
-				for(i = 0; i < selectionArray.length; i++)
-					System.out.println((i + 1) + ". " + quickArray[i]);
-				break;
-			case "NO":
-				System.out.println("Goodbye!");
-				menu = false;
-				break;
-			default:
-				System.out.println("Invalid input!");
-				break;
-			}//case
-		}//while
-		
-		input.close();
+		for (i = 0; i < randomsArray.length; i++)
+			System.out.println("Found: " + binarySearch(selectionArray, 0, 665, randomsArray[i]));
 	}//main
 	
 	
@@ -159,7 +148,7 @@ public class OrganizerRavosa {
 			mergeSort(listRight);
 			
 			comparisons = comparisons + merge(myArray, listLeft, listRight);
-		}//else
+		}//if
 		
 		if (length == 666)
 			System.out.println("Merge Sort: " + comparisons);
@@ -223,4 +212,41 @@ public class OrganizerRavosa {
 		return comparisons;
 	}//while
 	
+	public static void linearSearch(String[] searchArray, String[] randomValues) {
+		int j =0;
+		int i = 0;
+		int comparisons = 0;
+		int avg = 0;
+		int sum = 0;
+		
+		for (i = 0; i < randomValues.length; i++) {
+			j = 0;
+			comparisons = 0;
+			while (searchArray[j].compareTo(randomValues[i]) != 0) {
+				j++;
+				comparisons++;
+			}//while
+			System.out.println("Search #" + (i + 1) + " comparisons: " + comparisons);
+			sum = sum + comparisons;
+		}//for
+		
+		avg = sum/42;
+		
+		System.out.println("Linear search's average # of comparisons: " + avg);
+	}//linearSearch
+
+	public static boolean binarySearch(String[] myArray, int startIndex, int stopIndex, String target) {
+		int midpoint = ((startIndex+stopIndex)/2);
+		if (startIndex > stopIndex) {
+			return false;
+		}//if
+		else if (myArray[midpoint].compareTo(target) == 0) {
+			return true;
+		}//else
+		else if (target.compareTo(myArray[midpoint]) < 0)
+			binarySearch(myArray, startIndex, midpoint - 1, target);
+		else if (target.compareTo(myArray[midpoint]) > 0)
+			binarySearch(myArray, midpoint + 1, stopIndex, target);
+		
+	}//binarySearch
 }//OrganizerRavosa
