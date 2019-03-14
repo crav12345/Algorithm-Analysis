@@ -13,27 +13,25 @@ import java.util.*;
 
 public class OrganizerRavosa {
 
+	//These variables are constants that are used for the hash table later
 	static final int HASH_TABLE_SIZE = 250;
 	static final int LINES_IN_FILE = 666;
-	static int[] hashValues = new int[666];
+	static final int[] hashValues = new int[666];
+	static final int[] bucketCount = new int[HASH_TABLE_SIZE];
+	
+	//This static variable enables counting comparisons in binary search
+	static int binComp = 0;
 	
 	public static void main(String[] args) {
+		
+	//---------------------------READ IN FILE----------------------------------
+
 		//Variables for reading file
 		String fileName = "magicItems.txt";
 		File magicFile = new File(fileName);
 		String line = null;
 		String[] itemsArray = new String[666];
 		int counter = 0;
-		int i = 0;
-		String[] selectionArray = new String[666];
-		String[] insertionArray = new String[666];
-		String[] mergeArray = new String[666];
-		String[] quickArray = new String[666];
-		int hashCode = 0;
-
-		//boolean menu = true;
-		
-//---------------------END OF VARIABLES---------------------------------------
 				
 		//Read "magic items" into the array
 		try	{
@@ -56,21 +54,42 @@ public class OrganizerRavosa {
 		catch(Exception ex) {
 			System.out.println("Oops, something went wrong!");
 		}//catch
-				
-//----------------------END OF READING IN FILE--------------------------------				
 		
+	//------------------------END OF READING FILE------------------------------
+		
+		//This scanner variable allows the user to view things at his/her own
+		//pace. The program will not proceed until the user presses ENTER.
+		Scanner keyboard = new Scanner(System.in);
+		String advance = "";
+		
+		//i is initialized to be used as a counter
+		int i = 0;
+		
+		//Make arrays to hold copies of the itemsArray for each sort
+		String[] selectionArray = new String[666];
+		String[] insertionArray = new String[666];
+		String[] mergeArray = new String[666];
+		String[] quickArray = new String[666];
+		
+		//Fill each empty copy with the values of itemsArray
+		//Each of these will be sorted by their own method
 		for(i = 0; i < itemsArray.length; i++)
 			selectionArray[i] = itemsArray[i];
-		
 		for(i = 0; i < itemsArray.length; i++)
 			insertionArray[i] = itemsArray[i];
-		
 		for(i = 0; i < itemsArray.length; i++)
 			mergeArray[i] = itemsArray[i];
-		
 		for(i = 0; i < itemsArray.length; i++)
 			quickArray[i] = itemsArray[i];
 		
+		//Stop the program until the user is aware of the next function
+		//and decides to proceed.
+		System.out.println(
+				"Press ENTER to start with - comparisons in sort methods!");
+		advance = keyboard.nextLine();
+		
+		//This block will call each sorting function and prints the number of
+		//comparisons done to sort each array.
 		System.out.println("-----COMPARISONS IN EACH SORT-----");
 		selectionSort(selectionArray);
 		insertionSort(insertionArray);
@@ -78,26 +97,78 @@ public class OrganizerRavosa {
 		System.out.println("Quick Sort: " + quickSort(quickArray, 0, 665));
 		System.out.println("----------------------------------");
 		
-//---------------------------END OF SORTS--------------------------------------
+	//-----------------EACH SORT HAS BEEN USED BY THIS POINT-------------------
 		
+		//Stop the program until the user is aware of the next function
+		//and decides to proceed.
+		System.out.println(
+				"Press ENTER to continue to - comparisons in linear search!");
+		advance = keyboard.nextLine();
+		
+		//This variable allows a random number to be generated
 		Random rand = new Random();
+		
+		//This variable will retain the most recent random number generated
 		int randomValue = 0;
+		
+		//This array will store values of the 42 random indexes generated
 		String[] randomsArray = new String[42];
 		
+		//Based on the random value generated, find the string at the index
+		//of the random value in a sorted copy of itemsArray. Put that string
+		//into the randomsArray to store values that will be searched for.
 		for (i = 0; i < randomsArray.length; i++) {
 			randomValue = rand.nextInt(666);
 			randomsArray[i] = quickArray[randomValue];
 		}//for
 		
-//--------------------------END OF SEARCHES------------------------------------	
-		
-		for (i = 0; i < itemsArray.length; i++) {
-			hashCode = makeHashCode(itemsArray[i]);
-			hashValues[i] = hashCode;
+		//For every index in the random strings array, perform a linear search
+		//on the sorted copy of itemsArray to find it. Linear search counts
+		//comparisons and prints results on its own.
+		for(i = 0; i < randomsArray.length; i++) {
+			linearSearch(quickArray, randomsArray);
 		}//for
 		
-		analyzeHashValues(hashValues);
+		//Stop the program until the user is aware of the next function
+		//and decides to proceed.
+		System.out.println(
+				"----------------------------------------------------------");
+		System.out.println(
+				"Press ENTER to continue to - comparisons in binary search!");
+		advance = keyboard.nextLine();
 		
+		//Sum keeps track of the comparisons during each iteration of bnSearch
+		//and sums them so that the average can be computed at the end of the
+		//for loop.
+		int avg = 0;
+		int sum = 0;
+		
+		//This for loop runs through each index of the random strings array.
+		//The value at each index is then used as the target for a bnSearch.
+		//Unlike my linSearch, this function's comparisons are counted using
+		//several external variables and the printing occurs outside of the
+		//bnSearch method.
+		for(i = 0; i < randomsArray.length; i++) {
+			binComp = 0;
+			binarySearch(quickArray, 0, 665, randomsArray[i]);
+			System.out.println(
+					"Search #" + (i+1) + "; comparisons for '" +
+					randomsArray[i] + "': " + binComp);
+			sum = sum + binComp;
+		}//for
+		
+		avg = sum/42;
+		System.out.println("Binary search's average # of comparisons: " + avg);
+		System.out.println("------------------------------------------------");
+		
+	//----------------EACH SEARCH HAS BEEN USED BY THIS POINT------------------
+		
+		//Print a goodbye message
+		advance = "That's everything! Goodbye!";
+		System.out.println(advance);
+		
+		//Close the scanner object
+		keyboard.close();
 	}//main
 	
 	public static void selectionSort(String[] myArray) {
@@ -108,19 +179,30 @@ public class OrganizerRavosa {
 		int j = 0;
 		String temp = "";
 		
+		//The for loop only runs to length-2 because the array is already
+		//sorted by the time i reaches index of length - 1;
 		for (i = 0; i <= length-2; i++) {
 			smallPos = i;
 			for (j = i + 1; j < length; j++) {
+				
+				//If the value above smallPos is first alphabetically,
+				//then it becomes the new smallPos
 				if (myArray[j].compareTo(myArray[smallPos]) < 0) {
 					smallPos = j;
 					comparisons++;
 				}//if
+				
 			}//inner for
+			
+			//Swap the values, if the order is correct then this won't change
+			//anything.
 			temp = myArray[smallPos];
 			myArray[smallPos] = myArray[i];
 			myArray[i] = temp;
+			
 		}//outer for
 		
+		//Print the number of comparisons
 		System.out.println("Selection Sort: " + comparisons);
 	}//selectionSort
 	
@@ -132,8 +214,16 @@ public class OrganizerRavosa {
 		int comparisons = 0;
 		
 		for (i = 1; i < length; i++) {
+			//Key is used to expand the portion of the array the program is
+			//looking at.
 			key = myArray[i];
-			j = i-1;
+			
+			//J is used to refer to the index beneath the value of key
+			j = i - 1;
+			
+			//This loop runs to see if key needs to be swapped with any value
+			//in an index beneath it. If the value at index j is supposed to
+			//come after key alphabetically, the values will swap.
 			while (j >= 0 && (myArray[j].compareTo(key) > 0)) {
 				myArray[j + 1] = myArray[j];
 				j = j - 1;
@@ -142,32 +232,48 @@ public class OrganizerRavosa {
 			myArray[j + 1] = key;
 		}//for
 		
+		//Print result
 		System.out.println("Insertion Sort: " + comparisons);
 	}//insertionSort
 		
 	public static int mergeSort(String[] myArray, int left, int right) {
 		int comparisons = 0;
+		
+		//If the left and right values are not equal or crossing
 		if (left < right) {
+			//A midpoint is found which divides the array in two
 			int mid = (left + right)/2;
+			
+			//Recursive call of mergeSort on the two new array segments
 			mergeSort(myArray, left, mid);
 			mergeSort(myArray, mid + 1, right);
 			 
+			//The number of comparisons can be found by adding all the
+			//comparisons done in the merge function
 			comparisons = merge(myArray, left, mid, right);
 		}//if
 		
+		//Return the number of comparisons
 		return comparisons;
 	}//mergeSort
 	
 	public static int merge(String[] myArray, int left, int mid, int right) {
+		//These ints will reference the first index of the sub-arrays that will
+		//be merged back together
 		int i;
 		int j;
 		int k;
+		
 		int n1 = mid - left + 1;
 		int n2 = right - mid;
 		int comparisons = 0;
+		
+		//Arrays to store temporary values
 		String[] arrayLeft = new String[n1];
 		String[] arrayRight = new String[n2];
 		
+		//These for loops copy the data of the passed array into the left and
+		//right copies
 		for (i = 0; i < n1; i++)
 			arrayLeft[i] = myArray[left + i];
 		for (j = 0; j < n2; j++)
@@ -177,6 +283,7 @@ public class OrganizerRavosa {
 		j = 0;
 		k = left;
 		
+		//This while loop merges the temp-value arrays back together
 		while (i < n1 && j < n2) {
 			if(arrayLeft[i].compareTo(arrayRight[j]) <= 0) {
 				myArray[k] = arrayLeft[i];
@@ -191,18 +298,20 @@ public class OrganizerRavosa {
 			k++;
 		}//while
 		
+		//If there are any remaining elements in the arrays, i.e. if the array
+		//was of an odd length, they are copied to the array
 		while(i < n1) {
 			myArray[k] = arrayLeft[i];
 			i++;
 			k++;
 		}//while
-		
 		while (j < n2) {
 			myArray[k] = arrayRight[j];
 			j++;
 			k++;
 		}//while
 		
+		//Send back the number of comparisons
         return comparisons;
 	}//merge
 	
@@ -255,7 +364,7 @@ public class OrganizerRavosa {
 				j++;
 				comparisons++;
 			}//while
-			System.out.println("Search #" + (i + 1) + " comparisons: " + comparisons);
+			System.out.println("Search #" + (i+1) + "; comparisons for '" + randomValues[i] + "': " + comparisons);
 			sum = sum + comparisons;
 		}//for
 		
@@ -264,26 +373,28 @@ public class OrganizerRavosa {
 		System.out.println("Linear search's average # of comparisons: " + avg);
 	}//linearSearch
 
-	/*
-	public static boolean binarySearch(String[] myArray, int startIndex, int stopIndex, String target) {
-		int midpoint = ((startIndex+stopIndex)/2);
-		if (startIndex > stopIndex) {
-			return false;
+	public static void binarySearch(String[] myArray, int lowIndex, int highIndex, String target) {
+		int midpoint = (lowIndex+highIndex)/2;
+		if (highIndex == lowIndex || lowIndex == midpoint || highIndex == midpoint) {
+			binComp++;
 		}//if
-		else if (myArray[midpoint].compareTo(target) == 0) {
-			return true;
-		}//else
-		else if (target.compareTo(myArray[midpoint]) < 0)
-			binarySearch(myArray, startIndex, midpoint - 1, target);
-		else if (target.compareTo(myArray[midpoint]) > 0)
-			binarySearch(myArray, midpoint + 1, stopIndex, target);
 		
+		if (myArray[midpoint].compareTo(target) < 0) {
+			binComp++;
+			binarySearch(myArray, midpoint, highIndex, target);
+		}//if
+		else if (myArray[midpoint].compareTo(target) > 0) {
+			binComp++;
+			binarySearch(myArray, lowIndex, midpoint, target);
+		}//else if
+		else if (myArray[midpoint].compareTo(target) == 0) {
+			binComp++;
+		}//else if
 	}//binarySearch
-	*/
 
 //-------------------------END OF SEARCH METHODS-------------------------------
 	
-	static int makeHashCode(String target) {
+	public static int makeHashCode(String target) {
 		int length = target.length();
 		int letterTotal = 0;
 		int i = 0;
@@ -300,9 +411,8 @@ public class OrganizerRavosa {
 		return hashCode;
 	}//makeHashCode
 
-	static void analyzeHashValues(int[] hashValues) {
+	public static void analyzeHashValues(int[] hashValues) {
 		int asteriskCount = 0;
-		int[] bucketCount = new int[HASH_TABLE_SIZE];
 		int totalCount = 0;
 		int arrayIndex = 0;
 		int i = 0;
