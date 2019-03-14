@@ -171,6 +171,8 @@ public class OrganizerRavosa {
 		keyboard.close();
 	}//main
 	
+//------------------------SEARCH, SORT, HASH METHODS --------------------------
+	
 	public static void selectionSort(String[] myArray) {
 		int comparisons = 0;
 		int length = myArray.length;
@@ -258,8 +260,8 @@ public class OrganizerRavosa {
 	}//mergeSort
 	
 	public static int merge(String[] myArray, int left, int mid, int right) {
-		//These ints will reference the first index of the sub-arrays that will
-		//be merged back together
+		//These integers will reference the first index of the sub-arrays
+		//that will be merged back together
 		int i;
 		int j;
 		int k;
@@ -321,14 +323,20 @@ public class OrganizerRavosa {
 		
 		if (lowIndex < highIndex) {
 			comparisons++;
-			//partition here
+			//This block is the partition in the quickSort method
+			//The pivot value is the highest index because random values mess
+			//up my binarySearch method and I can't seem to figure out why
 			String pivot = myArray[highIndex];
 			int i = (lowIndex - 1);
+			
+			//In this for loop, every time the index, starting with the lower
+			//index passed, is less than or equal to the pivot
+			//(alphabetically), the value at j flips to the other side of the
+			//pivot.
 			for (int j = lowIndex; j < highIndex; j++) {
 				if(myArray[j].compareTo(pivot) <= 0) {
 					i++;
 					comparisons++;
-					
 					String temp = myArray[i];
 					myArray[i] = myArray[j];
 					myArray[j] = temp;
@@ -341,10 +349,12 @@ public class OrganizerRavosa {
 			
 			partitionValue = i + 1;
 			
+			//Recursively call quickSort until the array is sorted
 			quickSort(myArray, lowIndex, partitionValue-1);
 			quickSort(myArray, partitionValue+1, highIndex);
 		}//if
 		
+		//Send back comparisons
 		return comparisons;
 	}//quickSort
 	
@@ -357,36 +367,55 @@ public class OrganizerRavosa {
 		int avg = 0;
 		int sum = 0;
 		
+		//For loop runs through every value in the random array
 		for (i = 0; i < randomValues.length; i++) {
 			j = 0;
 			comparisons = 0;
+			
+			//This loop continues until the value from the sorted array is
+			//equal to the value being searched for from t he random values
+			//array. When the value is found, the loop ends and the number
+			//of comparisons is printed.
 			while (searchArray[j].compareTo(randomValues[i]) != 0) {
 				j++;
 				comparisons++;
 			}//while
-			System.out.println("Search #" + (i+1) + "; comparisons for '" + randomValues[i] + "': " + comparisons);
+			System.out.println(
+					"Search #" + (i+1) + "; comparisons for '" + 
+					randomValues[i] + "': " + comparisons);
 			sum = sum + comparisons;
 		}//for
 		
+		//Calculate and print the average comparisons
 		avg = sum/42;
-		
 		System.out.println("Linear search's average # of comparisons: " + avg);
 	}//linearSearch
 
-	public static void binarySearch(String[] myArray, int lowIndex, int highIndex, String target) {
+	public static void binarySearch(
+			String[] myArray, int lowIndex, int highIndex, String target) {
+		
 		int midpoint = (lowIndex+highIndex)/2;
-		if (highIndex == lowIndex || lowIndex == midpoint || highIndex == midpoint) {
+		if (highIndex == lowIndex || lowIndex == midpoint || 
+				highIndex == midpoint) {
 			binComp++;
 		}//if
 		
+		//If the midpoint of the array is less than the target string
 		if (myArray[midpoint].compareTo(target) < 0) {
 			binComp++;
+			//Recursively call binarySearch with the new lowValue being the
+			//midpoint.
 			binarySearch(myArray, midpoint, highIndex, target);
 		}//if
+		//If the midpoint of the array is greater than the target value
 		else if (myArray[midpoint].compareTo(target) > 0) {
 			binComp++;
+			//Recursively call binarySearch with the new upperValue being
+			//the midpoint.
 			binarySearch(myArray, lowIndex, midpoint, target);
 		}//else if
+		//If the midpoint is equal to the target value.
+		//This is the last case the bnSearch will hit.
 		else if (myArray[midpoint].compareTo(target) == 0) {
 			binComp++;
 		}//else if
