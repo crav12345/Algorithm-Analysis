@@ -169,15 +169,22 @@ public class OrganizerRavosa {
 		advance = keyboard.nextLine();
 		
 		sum = 0;
+		//This loop goes through every value in the random values array
 		for(i = 0; i < randomsArray.length; i++) {
+			//For each value, a new hashCode is generated along with a new
+			//instance of a queue.
 			int comparisons = 0;
 			int hashCode = makeHashCode(randomsArray[i]);
 			QueueRavosa thisQueue = new QueueRavosa();
+			//For each value in the sorted array, if the value of its hashCode
+			//is equal to the above hashCode, enqueue it into the queue.
 			for(int j = 0; j < quickArray.length; j++) {
 				if (makeHashCode(quickArray[j]) == hashCode) {
 					thisQueue.enqueue(quickArray[j]);
 				}//if
 			}//inner for
+			//Iterate through the queue until the value is found.
+			//Keep track of each comparison.
 			NodeRavosa current = new NodeRavosa();
 			current = thisQueue.getFront();
 			while (current.getData() != randomsArray[i]) {
@@ -187,17 +194,26 @@ public class OrganizerRavosa {
 			
 			//compensating for get
 			comparisons++;
-			System.out.println("Search #" + (i+1) + "; comparisons for '" + randomsArray[i] + "': " + comparisons);
+			
+			//Print comparisons for each iteration of the outer loop.
+			System.out.println(
+					"Search #" + (i+1) + "; comparisons for '" + 
+					randomsArray[i] + "': " + comparisons);
 			sum = sum + comparisons;
 		}//outer for
 		
+		//Average the comparisons for the hash table's search and print it.
 		avg = sum/42;
-		System.out.println("Hash table's average # of comparisons per search: " + avg);
+		System.out.println(
+				"Hash table's average # of comparisons per search: " + avg);
 		System.out.println("------------------------------------------------");
 
-		System.out.println("Press ENTER to continue to - analyzing the hash values!");
+		//Stop the program until the user wants to continue.
+		System.out.println(
+				"Press ENTER to continue to - analyzing the hash values!");
 		advance = keyboard.nextLine();
 		
+		//Print a graphic model of the hash table
 		for (i = 0; i < quickArray.length; i++) {
 			hashValues[i] = makeHashCode(quickArray[i]);
 		}//for
