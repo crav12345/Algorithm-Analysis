@@ -1,3 +1,12 @@
+//
+// Christopher Ravosa
+// Assignment 2
+// Due March 15
+//
+// This program reads a list of "magic items" into an array. It then
+// implements sorting, searching, and hashing to organize the "magic items" in
+// the array.
+//
 
 public class QueueRavosa {
 	//Declare variables for QueueRavosa objects
