@@ -11,23 +11,17 @@
 public class NodeRavosa {
 	//Declare necessary variables for NodeRavosa objects
 		private String myData;
-		private int myKey;
-		private NodeRavosa myNextKey;
-		private NodeRavosa myNextChain;
+		private NodeRavosa myNext;
 		
 		//Initialize variables with constructors
 		public NodeRavosa() {
 			myData = "";
-			myKey = 0;
-			myNextKey = null;
-			myNextChain = null;
+			myNext = null;
 		}//null constructor
 		
-		public NodeRavosa(String newData, int newKey) {
+		public NodeRavosa(String newData, int newHashCode) {
 			myData = newData;
-			myKey = newKey;
-			myNextKey = null;
-			myNextChain = null;
+			myNext = null;
 		}//full constructor
 		
 		//Getter and setter methods for each variable are used to update values of
@@ -36,31 +30,16 @@ public class NodeRavosa {
 			myData = newData;
 		}//setData
 		
-		public void setKey(int newKey) {
-			myKey = newKey;
-		}//setNext
-		
-		public void setNextKey (NodeRavosa newNextKey) {
-			myNextKey = newNextKey;
-		}//setnNextKey
-		
-		public void setNextChain (NodeRavosa newNextChain) {
-			myNextChain = newNextChain;
+		public void setNext(NodeRavosa newNextChain) {
+			myNext = newNextChain;
 		}//setNextChain
 		
 		public String getData() {
 			return myData;
 		}//getData
 		
-		public int getKey() {
-			return myKey;
-		}//getKey
-		
-		public NodeRavosa getNextKey () {
-			return myNextKey;
-		}//getNextKey
-		
-		public NodeRavosa getNextChain () {
-			return myNextChain;
+		public NodeRavosa getNext() {
+			return myNext;
 		}//getNextChain
+		
 }//NodeRavosa

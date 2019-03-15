@@ -122,12 +122,10 @@ public class OrganizerRavosa {
 			randomsArray[i] = quickArray[randomValue];
 		}//for
 		
-		//For every index in the random strings array, perform a linear search
-		//on the sorted copy of itemsArray to find it. Linear search counts
-		//comparisons and prints results on its own.
-		for(i = 0; i < randomsArray.length; i++) {
-			linearSearch(quickArray, randomsArray);
-		}//for
+		//Linear search accepts the sorted array and the random items and
+		//searches for the random values in the sorted array. Linear search
+		//keeps track of comparisons and prints results on its own.
+		linearSearch(quickArray, randomsArray);
 		
 		//Stop the program until the user is aware of the next function
 		//and decides to proceed.
@@ -162,6 +160,21 @@ public class OrganizerRavosa {
 		System.out.println("------------------------------------------------");
 		
 	//----------------EACH SEARCH HAS BEEN USED BY THIS POINT------------------
+		
+		System.out.println(
+				"Press ENTER to continue to - comparisons in finding hashed " + 
+				"values!");
+		
+		for(i = 0; i < randomsArray.length; i++) {
+			int hashCode = makeHashCode(randomsArray[i]);
+			QueueRavosa thisQueue = new QueueRavosa();
+			for(int j = 0; j < quickArray.length; j++) {
+				if (makeHashCode(quickArray[j]) == hashCode) {
+					thisQueue.enqueue(quickArray[j]);
+				}//if
+			}//inner for
+			
+		}//outer for
 		
 		//Print a goodbye message
 		advance = "That's everything! Goodbye!";
@@ -317,7 +330,8 @@ public class OrganizerRavosa {
         return comparisons;
 	}//merge
 	
-	public static int quickSort(String[] myArray, int lowIndex, int highIndex) {
+	public static int quickSort(
+			String[] myArray, int lowIndex, int highIndex) {
 		int partitionValue = 0;
 		int comparisons = 0;
 		
@@ -360,7 +374,8 @@ public class OrganizerRavosa {
 	
 //--------------------------END OF SORT METHODS--------------------------------
 	
-	public static void linearSearch(String[] searchArray, String[] randomValues) {
+	public static void linearSearch(
+			String[] searchArray, String[] randomValues) {
 		int j =0;
 		int i = 0;
 		int comparisons = 0;
@@ -473,22 +488,21 @@ public class OrganizerRavosa {
 		System.out.format("%.2f%n", averageLoad);
 		   
 		System.out.print("Standard Deviation: ");
-		// TODO: Refactor this into its own method.
-		         double sum = 0;
-		         for (i = 0; i < HASH_TABLE_SIZE; i++) {
-		            // For each value in the array...
-		            // ... subtract the mean from each one ...
-		            double result = bucketCount[i] - averageLoad;
-		            // ... and square the result.
-		            double square = result * result;
-		            // Sum all of those squares.
-		            sum = sum + square;
-		         }
-		         // Divide the sum by the number of values ...
-		         double temp = sum / HASH_TABLE_SIZE;
-		         // ... and take the square root of that.
-		         double stdDev = Math.sqrt(temp);
-		         System.out.format("%.2f%n", stdDev);
-		}//analyzeHashValues
-
+        double sum = 0;
+        for (i = 0; i < HASH_TABLE_SIZE; i++) {
+        	// 	For each value in the array...
+        	// ... subtract the mean from each one ...
+        	double result = bucketCount[i] - averageLoad;
+		    // ... and square the result.
+		    double square = result * result;
+		    // Sum all of those squares.
+		    sum = sum + square;
+        }//for
+        // Divide the sum by the number of values ...
+		double temp = sum / HASH_TABLE_SIZE;
+		// ... and take the square root of that.
+		double stdDev = Math.sqrt(temp);
+		System.out.format("%.2f%n", stdDev);
+	}//analyzeHashValues
+	
 }//OrganizerRavosa
