@@ -20,6 +20,10 @@ public class QueueRavosa {
 		return ans;
 	}//isEmpty
 	
+	public NodeRavosa getFront() {
+		return myFront;
+	}//getFront
+	
 	//enqueue() creates a new instance of NodeRavosa and sets its stored
 	//value to the next character in the string being inspected in main[].
 	//If the queue is empty, the new node is made both the head and tail.

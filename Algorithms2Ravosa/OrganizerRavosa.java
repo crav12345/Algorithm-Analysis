@@ -161,11 +161,16 @@ public class OrganizerRavosa {
 		
 	//----------------EACH SEARCH HAS BEEN USED BY THIS POINT------------------
 		
+		//Stop the program until the user is aware of the next function
+		//and decides to proceed.
 		System.out.println(
 				"Press ENTER to continue to - comparisons in finding hashed " + 
 				"values!");
+		advance = keyboard.nextLine();
 		
+		sum = 0;
 		for(i = 0; i < randomsArray.length; i++) {
+			int comparisons = 0;
 			int hashCode = makeHashCode(randomsArray[i]);
 			QueueRavosa thisQueue = new QueueRavosa();
 			for(int j = 0; j < quickArray.length; j++) {
@@ -173,11 +178,35 @@ public class OrganizerRavosa {
 					thisQueue.enqueue(quickArray[j]);
 				}//if
 			}//inner for
+			NodeRavosa current = new NodeRavosa();
+			current = thisQueue.getFront();
+			while (current.getData() != randomsArray[i]) {
+				comparisons++;
+				current = current.getNext();
+			}//while
 			
+			//compensating for get
+			comparisons++;
+			System.out.println("Search #" + (i+1) + "; comparisons for '" + randomsArray[i] + "': " + comparisons);
+			sum = sum + comparisons;
 		}//outer for
 		
+		avg = sum/42;
+		System.out.println("Hash table's average # of comparisons per search: " + avg);
+		System.out.println("------------------------------------------------");
+
+		System.out.println("Press ENTER to continue to - analyzing the hash values!");
+		advance = keyboard.nextLine();
+		
+		for (i = 0; i < quickArray.length; i++) {
+			hashValues[i] = makeHashCode(quickArray[i]);
+		}//for
+		analyzeHashValues(hashValues);
+
+		System.out.println("------------------------------------------------");
+
 		//Print a goodbye message
-		advance = "That's everything! Goodbye!";
+		advance = "That's everything, goodbye!";
 		System.out.println(advance);
 		
 		//Close the scanner object
