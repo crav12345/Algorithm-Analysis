@@ -66,7 +66,7 @@ public class GraphReaderRavosa {
 				//Last graph in file
 				graphNumber++;
 				System.out.println("Matrix " + graphNumber + ":");
-				printMatrix(graphInfo);
+				printZorkMatrix(graphInfo);
 				System.out.println();
 				System.out.println();
 				graphInfo.clear();
@@ -94,6 +94,21 @@ public class GraphReaderRavosa {
 			}//for
 			System.out.println();
 		}//for
+	}//printMatrix
 	
+	public static void printZorkMatrix(ArrayList<VertexRavosa> matrixInfo) {
+		int i = 0;
+		int j = 0;
+		
+		for (i = 0; i < matrixInfo.size(); i++) {
+			for (j = 0; j < matrixInfo.size(); j++) {
+				if (matrixInfo.get(j).sharesEdge(i)) {
+					System.out.print(1 + " ");
+				}//if
+				else
+					System.out.print(0 + " ");
+			}//for
+			System.out.println();
+		}//for
 	}//printMatrix
 }//GraphReaderRavosa
