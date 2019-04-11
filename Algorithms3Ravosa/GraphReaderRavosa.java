@@ -55,11 +55,17 @@ public class GraphReaderRavosa {
 					}//else if
 					else if ((line.equals("new")) && (graphInfo.isEmpty() == false)) {
 						graphNumber++;
+						
 						System.out.println("Matrix " + graphNumber + ":");
 						printMatrix(graphInfo);
 						System.out.println();
-						System.out.println();
+						System.out.println("Adjacency List " + graphNumber + ":");
+						printAdjList(graphInfo);
+						
 						graphInfo.clear();
+						
+						System.out.println();
+						System.out.println();
 					}//else if
 				}//while
 				
@@ -68,7 +74,8 @@ public class GraphReaderRavosa {
 				System.out.println("Matrix " + graphNumber + ":");
 				printZorkMatrix(graphInfo);
 				System.out.println();
-				System.out.println();
+				System.out.println("Adjacency List " + graphNumber + ":");
+				printAdjList(graphInfo);	
 				graphInfo.clear();
 				
 				//Close the file Scanner
@@ -95,6 +102,14 @@ public class GraphReaderRavosa {
 			System.out.println();
 		}//for
 	}//printMatrix
+	
+	public static void printAdjList(ArrayList<VertexRavosa> adjListInfo) {
+		int i = 0;
+		for (i = 0; i < adjListInfo.size(); i++) {
+			System.out.print((i+1) + "| --> ");
+			System.out.println(adjListInfo.get(i).getEdges());
+		}//for
+	}//printAdjList
 	
 	public static void printZorkMatrix(ArrayList<VertexRavosa> matrixInfo) {
 		int i = 0;
