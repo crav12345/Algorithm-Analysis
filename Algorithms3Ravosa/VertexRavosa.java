@@ -14,17 +14,32 @@ import java.util.*;
 public class VertexRavosa {
 	//Declare necessary variables for VertexRavosa objects
 	private int myVID;
-	private ArrayList<Integer> myEdges;
+	private ArrayList<VertexRavosa> myEdges;
+	private String myColor;
+	private VertexRavosa myPrevious;
+	private VertexRavosa myNext;
+	private int myDiscoverTime;
+	private int myFinishTime;
 	
 	//Initialize variables with constructors
 	public VertexRavosa() {
 		myVID = 0;
 		myEdges = null;
+		myColor = "";
+		myPrevious = null;
+		myNext = null;
+		myDiscoverTime = 0;
+		myFinishTime = 0;
 	}//null constructor
 	
 	public VertexRavosa(int newVID) {
 		myVID = newVID;
-		myEdges = new ArrayList<Integer>();
+		myEdges = new ArrayList<VertexRavosa>();
+		myColor = "WHITE";
+		myPrevious = null;
+		myNext = null;
+		myDiscoverTime = 0;
+		myFinishTime = 0;
 	}//full constructor
 	
 	//Getter and setter methods for each variable are used to update values of
@@ -33,22 +48,64 @@ public class VertexRavosa {
 		return myVID;
 	}//getVID
 	
-	public ArrayList<Integer> getEdges() {
+	public ArrayList<VertexRavosa> getEdges() {
 		return myEdges;
 	}//getEdges
+	
+	public String getColor() {
+		return myColor;
+	}//getColor
+	
+	public VertexRavosa getPrevious() {
+		return myPrevious;
+	}//getPrevious
+	
+	public VertexRavosa getNext() {
+		return myNext;
+	}//getPrevious
+	
+	public int getDiscoverTime() {
+		return myDiscoverTime;
+	}//getDiscoverTime
+	
+	public int getFinishTime() {
+		return myFinishTime;
+	}//getFinishTime
 	
 	public void setVID (int newVID) {
 		myVID = newVID;
 	}//setVID
 	
-	public void addEdge(int newEdge) {
+	public void addEdge(VertexRavosa newEdge) {
 		myEdges.add(newEdge);
 	}//addEdge
 	
 	public boolean sharesEdge(int target) {
 		boolean found = false;
-		if(myEdges.contains(target))
-			found = true;
+		for (int i = 0; i < myEdges.size(); i++) {
+			if(myEdges.get(i).getVID() == target)
+				found = true;
+		}//for
 		return found;
 	}//sharesEdge
+	
+	public void setColor(String newColor) {
+		myColor = newColor;
+	}//setColor
+	
+	public void setPrevious(VertexRavosa newPrevious) {
+		myPrevious = newPrevious;
+	}//setPrevious
+	
+	public void setNext(VertexRavosa newNext) {
+		myNext = newNext;
+	}//setPrevious
+	
+	public void setDiscoverTime(int newDiscoverTime) {
+		myDiscoverTime = newDiscoverTime;
+	}//getDiscoverTime
+	
+	public void setFinishTime(int newFinishTime) {
+		myFinishTime = newFinishTime;
+	}//getFinishTime
 }//VertexRavosa
