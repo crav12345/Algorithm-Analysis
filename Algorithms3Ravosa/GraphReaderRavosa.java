@@ -10,13 +10,15 @@
 //
 
 import java.util.*;
-import java.util.Scanner;
 import java.io.File;
 
 public class GraphReaderRavosa {
 
 	public static int graphNumber = 0;
 	public static int time = 0;
+	public static int comparisons = 0;
+	public static int sum = 0;
+	public static int avg = 0;
 	
 	public static void main(String[] args) {
 		
@@ -101,8 +103,79 @@ public class GraphReaderRavosa {
 			}//try
 			//Catch statement gives a nicer error if the program crashes
 			catch(Exception ex) {
-				System.out.println("It's a no from me dog: " + ex);
+				System.out.println("Oops, something went wrong: " + ex);
 			}//catch
+			
+			
+			System.out.println();
+			System.out.println();
+			
+			//Variables for reading file
+			fileName = "magicItems.txt";
+			File magicFile = new File(fileName);
+			line = null;
+			String[] itemsArray = new String[666];
+			int counter = 0;
+					
+			//Read "magic items" into the array
+			try	{
+				//Create a Scanner object to read from the file
+				Scanner magicItems = new Scanner(magicFile);
+				//While loop to read lines until the file doesn't have any left
+				while(magicItems.hasNext())	{
+					//Read the next line of input and store it
+					line = magicItems.nextLine();	
+					//Add the stored String as a lower-case into the array
+					itemsArray[counter] = line.toLowerCase();
+					//Increment the counter to find length of the array
+					//for later use
+					counter++;
+				}//while
+				//Close the file Scanner
+				magicItems.close();
+			}//try
+			//Catch statement gives a nicer error if the program crashes
+			catch(Exception ex) {
+				System.out.println("Oops, something went wrong: " + ex);
+			}//catch
+			
+			BinaryTreeRavosa greatDekuTree = new BinaryTreeRavosa();
+			
+			for (i = 0; i < itemsArray.length; i++) {
+				NodeRavosa newGuy = new NodeRavosa(itemsArray[i]);
+				greatDekuTree.treeInsert(newGuy);
+			}//for
+			
+			//This variable allows a random number to be generated
+			Random rand = new Random();
+			
+			//This variable will retain the most recent random number generated
+			int randomValue = 0;
+			
+			//This array will store values of the 42 random indexes generated
+			String[] randomsArray = new String[42];
+			
+			//Based on the random value generated, find the string at the index
+			//of the random value in a sorted copy of itemsArray. Put that string
+			//into the randomsArray to store values that will be searched for.
+			for (i = 0; i < randomsArray.length; i++) {
+				randomValue = rand.nextInt(666);
+				randomsArray[i] = itemsArray[randomValue];
+			}//for
+			
+			System.out.println("Searching for Random Strings in Binary Tree: ");
+			for (i = 0; i < randomsArray.length; i++) {
+				NodeRavosa x = greatDekuTree.getRoot();
+				treeSearch(x, randomsArray[i]);
+				sum = sum + comparisons;
+				System.out.println("Comparisons in search #" + (i+1) + ": " + sum);
+				avg += sum;
+				sum = 0;
+				comparisons = 0;
+			}//for
+			
+			avg = avg / randomsArray.length;
+			System.out.println("Average comparisons: " + avg);
 	}//main
 	
 	public static void printMatrix(ArrayList<VertexRavosa> matrixInfo) {
@@ -223,4 +296,21 @@ public class GraphReaderRavosa {
 			System.out.println();
 		}//for
 	}//printMatrix
+
+	public static NodeRavosa treeSearch(NodeRavosa x, String key) {
+		NodeRavosa ans;
+		if (x == null || key == x.getData()) {
+			ans = x;
+			comparisons++;
+		}//if
+		else if (key.compareTo(x.getData()) < 0) {
+			ans = treeSearch(x.getLeft(), key);
+			comparisons++;
+		}//else if
+		else {
+			ans = treeSearch(x.getRight(), key);
+			comparisons++;
+		}//else
+		return ans;
+	}//treeSearch
 }//GraphReaderRavosa
