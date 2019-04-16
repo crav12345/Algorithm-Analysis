@@ -67,7 +67,7 @@ public class GraphReaderRavosa {
 						printAdjList(graphInfo);
 						System.out.println();
 						System.out.println("DFS Route " + graphNumber + ":");
-						DFS(graphInfo);
+						//DFS(graphInfo);
 						System.out.println();
 						System.out.println();
 						System.out.println("BFS Route " + graphNumber + ":");
@@ -90,12 +90,12 @@ public class GraphReaderRavosa {
 				printAdjList(graphInfo);
 				System.out.println();
 				System.out.println("DFS Route " + graphNumber + ":");
-				DFS(graphInfo);
+				//DFS(graphInfo);
 				System.out.println();
 				System.out.println();
 				System.out.println("BFS Route " + graphNumber + ":");
+				zorkBFS(graphInfo, graphInfo.get(0));
 				System.out.println();
-				BFS(graphInfo, graphInfo.get(0));
 				graphInfo.clear();
 				
 				//Close the file Scanner
@@ -251,7 +251,7 @@ public class GraphReaderRavosa {
 		u.setFinishTime(time);
 	}//DFSVisit
 	
-	public static void BFS (ArrayList<VertexRavosa> G, VertexRavosa s) {
+	public static void BFS (ArrayList<VertexRavosa> G, VertexRavosa rootNode) {
 		QueueRavosa grayVertices = new QueueRavosa();
 		for (int u = 0; u < G.size(); u++) {
 			G.get(u).setColor("WHITE");
@@ -261,20 +261,52 @@ public class GraphReaderRavosa {
 				G.get(u).getEdges().get(i).setColor("WHITE");
 			}//for
 		}//for
-		s.setColor("GRAY");
-		System.out.print(s.getVID() + "|");
-		s.setDiscoverTime(0);
-		s.setPrevious(null);
-		grayVertices.enqueue(s);
-		while (grayVertices.isEmpty() == false) {
+		rootNode.setColor("GRAY");
+		rootNode.setDiscoverTime(0);
+		rootNode.setPrevious(null);
+		grayVertices.enqueue(rootNode);
+		rootNode.setVisited(true);
+		while (!grayVertices.isEmpty()) {
 			VertexRavosa u = grayVertices.dequeue();
+			System.out.print(u.getVID() + "|");
 			for (int v = 0; v < u.getEdges().size(); v++) {
 				System.out.print(u.getEdges().get(v).getVID() + "|");
-				if (u.getEdges().get(v).getColor().equals("WHITE")) {
-					u.getEdges().get(v).setColor("GRAY");
-					u.getEdges().get(v).setDiscoverTime((u.getDiscoverTime() + 1));
-					u.getEdges().get(v).setPrevious(u);
-					grayVertices.enqueue(u.getEdges().get(v));
+				if (G.get((u.getEdges().get(v).getVID()) - 1).getColor().equals("WHITE")) {
+					G.get((u.getEdges().get(v).getVID()) - 1).setColor("GRAY");
+					G.get((u.getEdges().get(v).getVID()) - 1).setDiscoverTime((u.getDiscoverTime() + 1));
+					G.get((u.getEdges().get(v).getVID()) - 1).setPrevious(u);
+					grayVertices.enqueue(G.get((u.getEdges().get(v).getVID()) - 1));
+				}//if
+			}//for
+			u.setColor("BLACK");
+		}//while
+	}//breadthFirstSearch
+
+	public static void zorkBFS (ArrayList<VertexRavosa> G, VertexRavosa rootNode) {
+		QueueRavosa grayVertices = new QueueRavosa();
+		for (int u = 0; u < G.size(); u++) {
+			G.get(u).setColor("WHITE");
+			G.get(u).setDiscoverTime(0);
+			G.get(u).setPrevious(null);
+			for (int i = 0; i < G.get(u).getEdges().size(); i++) {
+				G.get(u).getEdges().get(i).setColor("WHITE");
+			}//for
+		}//for
+		rootNode.setColor("GRAY");
+		rootNode.setDiscoverTime(0);
+		rootNode.setPrevious(null);
+		grayVertices.enqueue(rootNode);
+		rootNode.setVisited(true);
+		while (!grayVertices.isEmpty()) {
+			VertexRavosa u = grayVertices.dequeue();
+			System.out.print(u.getVID() + "|");
+			for (int v = 0; v < u.getEdges().size(); v++) {
+				System.out.print(u.getEdges().get(v).getVID() + "|");
+				if (G.get(u.getEdges().get(v).getVID()).getColor().equals("WHITE")) {
+					G.get(u.getEdges().get(v).getVID()).setColor("GRAY");
+					G.get(u.getEdges().get(v).getVID()).setDiscoverTime((u.getDiscoverTime() + 1));
+					G.get(u.getEdges().get(v).getVID()).setPrevious(u);
+					grayVertices.enqueue(G.get(u.getEdges().get(v).getVID()));
 				}//if
 			}//for
 			u.setColor("BLACK");
