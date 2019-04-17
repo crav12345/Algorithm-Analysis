@@ -11,9 +11,10 @@
 
 public class NodeRavosa {
 	
-	//The nodes have 'myData' to hold their magic item, a left and right because
-	//binary trees require no more than two children per node, and a 'myParent'
-	//variable that points to something, but I can't remember what it is...
+	//The nodes have 'myData' to hold their magic item, a left and right
+	//because binary trees require no more than two children per node, and a
+	//'myParent' variable that points to something, but I can't remember what
+	//it is...
 	private String myData;
 	private NodeRavosa myLeft;
 	private NodeRavosa myRight;
