@@ -18,9 +18,6 @@ public class VertexRavosa {
 	private String myColor;
 	private VertexRavosa myPrevious;
 	private VertexRavosa myNext;
-	private int myDiscoverTime;
-	private int myFinishTime;
-	private boolean visited;
 	
 	//Initialize variables with constructors
 	public VertexRavosa() {
@@ -29,9 +26,6 @@ public class VertexRavosa {
 		myColor = "";
 		myPrevious = null;
 		myNext = null;
-		myDiscoverTime = 0;
-		myFinishTime = 0;
-		visited = false;
 	}//null constructor
 	
 	public VertexRavosa(int newVID) {
@@ -40,9 +34,6 @@ public class VertexRavosa {
 		myColor = "WHITE";
 		myPrevious = null;
 		myNext = null;
-		myDiscoverTime = 0;
-		myFinishTime = 0;
-		visited = false;
 	}//full constructor
 	
 	//Getter and setter methods for each variable are used to update values of
@@ -67,14 +58,6 @@ public class VertexRavosa {
 		return myNext;
 	}//getPrevious
 	
-	public int getDiscoverTime() {
-		return myDiscoverTime;
-	}//getDiscoverTime
-	
-	public int getFinishTime() {
-		return myFinishTime;
-	}//getFinishTime
-	
 	public void setVID (int newVID) {
 		myVID = newVID;
 	}//setVID
@@ -91,10 +74,6 @@ public class VertexRavosa {
 		}//for
 		return found;
 	}//sharesEdge
-	
-	public boolean getVisited() {
-		return visited;
-	}//getVisited
 		
 	public void setColor(String newColor) {
 		myColor = newColor;
@@ -108,15 +87,4 @@ public class VertexRavosa {
 		myNext = newNext;
 	}//setPrevious
 	
-	public void setDiscoverTime(int newDiscoverTime) {
-		myDiscoverTime = newDiscoverTime;
-	}//getDiscoverTime
-	
-	public void setFinishTime(int newFinishTime) {
-		myFinishTime = newFinishTime;
-	}//getFinishTime
-	
-	public void setVisited(boolean newVisited) {
-		visited = newVisited;
-	}//setVisited
 }//VertexRavosa

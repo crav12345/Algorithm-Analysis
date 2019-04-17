@@ -20,33 +20,34 @@ public class BinaryTreeRavosa {
 		return myRoot;
 	}//getRoot
 	
-	/*public NodeRavosa treeSearch(NodeRavosa x, String key) {
-		NodeRavosa ans;
-		if (x == null || key == x.getData())
-			ans = x;
-		else if (key.compareTo(x.getData()) < 0)
-			ans = treeSearch(x.getLeft(), key);
-		else
-			ans = treeSearch(x.getRight(), key);
-		return ans;
-	}//treeSearch*/
-	
-	public void treeInsert(NodeRavosa z) {
+	//This method allows us to populate the tree. It accepts the new entry
+	//as a parameter.
+	public void treeInsert(NodeRavosa newGuy) {
 		NodeRavosa y = null;
 		NodeRavosa x = myRoot;
+		
+		//While the tree is not empty...
 		while (x != null) {
 			y = x;
-			if (z.getData().compareTo(x.getData()) < 0)
+			//...if the new entry's String is less then the root's data, then
+			//progress to the left child. If it is greater, progress to the
+			//right child.
+			if (newGuy.getData().compareTo(x.getData()) < 0)
 				x = x.getLeft();
 			else
 				x = x.getRight();
 		}//while
-		z.setP(y);
+		
+		//Set the new guy's parent to the root.
+		newGuy.setParent(y);
+		
+		//If the the graph was empty, then the root is now the new entry.
 		if (y == null)
-			myRoot = z;
-		else if (z.getData().compareTo(y.getData()) < 0)
-				y.setLeft(z);
+			myRoot = newGuy;
+		//Otherwise, set the root's child to the new entry.
+		else if (newGuy.getData().compareTo(y.getData()) < 0)
+				y.setLeft(newGuy);
 		else
-			y.setRight(z);
+			y.setRight(newGuy);
 	}//treeInsert
 }//BinaryTreeRavosa

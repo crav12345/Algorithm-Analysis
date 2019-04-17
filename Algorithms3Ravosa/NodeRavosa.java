@@ -10,25 +10,30 @@
 //
 
 public class NodeRavosa {
+	
+	//The nodes have 'myData' to hold their magic item, a left and right because
+	//binary trees require no more than two children per node, and a 'myParent'
+	//variable that points to something, but I can't remember what it is...
 	private String myData;
 	private NodeRavosa myLeft;
 	private NodeRavosa myRight;
-	private NodeRavosa p;
+	private NodeRavosa myParent;
 	
 	public NodeRavosa() {
 		myData = "";
 		myLeft = null;
 		myRight = null;
-		p = null;
+		myParent = null;
 	}//null constructor
 	
 	public NodeRavosa(String newData) {
 		myData = newData;
 		myLeft = null;
 		myRight = null;
-		p = null;
+		myParent = null;
 	}//full constructor
 	
+	//Getters and setters
 	public String getData() {
 		return myData;
 	}//getData
@@ -41,8 +46,8 @@ public class NodeRavosa {
 		return myRight;
 	}//getRight
 	
-	public NodeRavosa getP() {
-		return p;
+	public NodeRavosa getParent() {
+		return myParent;
 	}//getP
 	
 	public void setData(String newData) {
@@ -57,7 +62,7 @@ public class NodeRavosa {
 		myRight = newRight;
 	}//setLeft
 	
-	public void setP(NodeRavosa newP) {
-		p = newP;
+	public void setParent(NodeRavosa newPointer) {
+		myParent = newPointer;
 	}//setP
 }//NodeRavosa
