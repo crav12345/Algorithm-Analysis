@@ -89,7 +89,7 @@ public class GraphReaderRavosa {
 				printAdjList(graphInfo);
 				System.out.println();
 				System.out.println("DFS Route " + graphNumber + ":");
-				//DFS(graphInfo);
+				zorkDFS(graphInfo);
 				System.out.println();
 				System.out.println();
 				System.out.println("BFS Route " + graphNumber + ":");
@@ -243,6 +243,28 @@ public class GraphReaderRavosa {
 		System.out.print(u.getVID() + "|");
 	}//DFSVisit
 	
+	public static void zorkDFS(ArrayList<VertexRavosa> G) {
+		for (int u = 0; u < G.size(); u++) {
+			G.get(u).setColor("WHITE");
+		}//for
+		for (int u = 0; u < G.size(); u++) {
+			if (G.get(u).getColor().equals("WHITE")) {
+				zorkDFSVisit(G, G.get(u));
+			}//if
+		}//for
+	}//depthFirstSearch
+	
+	public static void zorkDFSVisit(ArrayList<VertexRavosa> G, VertexRavosa u) {
+		u.setColor("GREY");
+		for (int v = 0; v < u.getEdges().size(); v++) {
+			if (G.get(u.getEdges().get(v).getVID()).getColor().equals("WHITE")) {
+				zorkDFSVisit(G, G.get(u.getEdges().get(v).getVID()));
+			}//if
+		}//for
+		u.setColor("BLACK");
+		System.out.print(u.getVID() + "|");
+	}//DFSVisit
+	
 	public static void BFS (ArrayList<VertexRavosa> G, VertexRavosa rootNode) {
 		QueueRavosa grayVertices = new QueueRavosa();
 		for (int u = 0; u < G.size(); u++) {
@@ -268,26 +290,16 @@ public class GraphReaderRavosa {
 		QueueRavosa grayVertices = new QueueRavosa();
 		for (int u = 0; u < G.size(); u++) {
 			G.get(u).setColor("WHITE");
-			G.get(u).setDiscoverTime(0);
-			G.get(u).setPrevious(null);
-			for (int i = 0; i < G.get(u).getEdges().size(); i++) {
-				G.get(u).getEdges().get(i).setColor("WHITE");
-			}//for
 		}//for
 		rootNode.setColor("GRAY");
-		rootNode.setDiscoverTime(0);
-		rootNode.setPrevious(null);
 		grayVertices.enqueue(rootNode);
-		rootNode.setVisited(true);
+		System.out.print(rootNode.getVID() + "|");
 		while (!grayVertices.isEmpty()) {
 			VertexRavosa u = grayVertices.dequeue();
-			System.out.print(u.getVID() + "|");
 			for (int v = 0; v < u.getEdges().size(); v++) {
-				System.out.print(u.getEdges().get(v).getVID() + "|");
 				if (G.get(u.getEdges().get(v).getVID()).getColor().equals("WHITE")) {
+					System.out.print(u.getEdges().get(v).getVID() + "|");
 					G.get(u.getEdges().get(v).getVID()).setColor("GRAY");
-					G.get(u.getEdges().get(v).getVID()).setDiscoverTime((u.getDiscoverTime() + 1));
-					G.get(u.getEdges().get(v).getVID()).setPrevious(u);
 					grayVertices.enqueue(G.get(u.getEdges().get(v).getVID()));
 				}//if
 			}//for
