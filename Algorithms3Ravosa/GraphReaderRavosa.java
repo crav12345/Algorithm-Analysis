@@ -29,195 +29,199 @@ public class GraphReaderRavosa {
 		int i = 0;
 		int vertex;
 		
-		//Read file into the array
-			try {
-				//Create a Scanner object to read from the file
-				Scanner graphFile = new Scanner(myFile);
+		//Reads each individual graph into an array-list of vertices
+		try {
+			//Create a Scanner object to read from the file
+			Scanner graphFile = new Scanner(myFile);
+			
+			//While loop to read lines until the file doesn't have any left
+			while(graphFile.hasNext()) {
 				
-				//While loop to read lines until the file doesn't have any left
-				while(graphFile.hasNext()) {
-					
-					//Read the next line of input and store it
+				//Read the next line of input and store it
+				line = graphFile.next();
+				
+				//Perform a function based on the key words 'vertex', 
+				//'edge', and 'new' with these if-else's
+				if(line.equals("vertex")) {
+					//Add the vertex to the graph arraylist
+					vertex = graphFile.nextInt();
+					VertexRavosa thisVertex = new VertexRavosa(vertex);
+					graphInfo.add(thisVertex);
+				}//if
+				else if (line.equals("edge")) {
+					int temp = graphFile.nextInt();
+					VertexRavosa startVertex = new VertexRavosa(temp);
 					line = graphFile.next();
+					temp = graphFile.nextInt();
+					VertexRavosa endVertex = new VertexRavosa(temp);
+					//For every vertex in the graph information, add its
+					//edges to the corresponding value in the graph info
+					//list. This representation is undirected so values
+					//connect both ways to each other.
+					for(i = 0; i < graphInfo.size(); i++) {
+						if (graphInfo.get(i).getVID() == startVertex
+						.getVID()) {
+							graphInfo.get(i).addEdge(endVertex);
+						}//if
+						else if (graphInfo.get(i).getVID() == endVertex
+						.getVID()) {
+							graphInfo.get(i).addEdge(startVertex);
+						}//else if
+					}//for
+				}//else if
+				//If a new graph is being made, print the results and dump
+				//the current instance of the graph list. The condition
+				//will ignore the first 'new'.
+				else if ((line.equals("new")) && (graphInfo.isEmpty() ==
+				false)) {
 					
-					//Perform a function based on the key words 'vertex', 
-					//'edge', and 'new' with these if-else's
-					if(line.equals("vertex")) {
-						//Add the vertex to the graph arraylist
-						vertex = graphFile.nextInt();
-						VertexRavosa thisVertex = new VertexRavosa(vertex);
-						graphInfo.add(thisVertex);
-					}//if
-					else if (line.equals("edge")) {
-						int temp = graphFile.nextInt();
-						VertexRavosa startVertex = new VertexRavosa(temp);
-						line = graphFile.next();
-						temp = graphFile.nextInt();
-						VertexRavosa endVertex = new VertexRavosa(temp);
-						//For every vertex in the graph information, add its
-						//edges to the corresponding value in the graph info
-						//list. This representation is undirected so values
-						//connect both ways to each other.
-						for(i = 0; i < graphInfo.size(); i++) {
-							if (graphInfo.get(i).getVID() == startVertex
-							.getVID()) {
-								graphInfo.get(i).addEdge(endVertex);
-							}//if
-							else if (graphInfo.get(i).getVID() == endVertex
-							.getVID()) {
-								graphInfo.get(i).addEdge(startVertex);
-							}//else if
-						}//for
-					}//else if
-					//If a new graph is being made, print the results and dump
-					//the current instance of the graph list. The condition
-					//will ignore the first 'new'.
-					else if ((line.equals("new")) && (graphInfo.isEmpty() ==
-					false)) {
-						
-						//Graph number is used for formatting and also to see
-						//if the current graph is the "Zork Graph" since it
-						//requires special treatment.
-						graphNumber++;
-						
-						System.out.println("Matrix " + graphNumber + ":");
-						printMatrix(graphInfo);
-						System.out.println();
-						System.out.println("Adjacency List " + 
-						graphNumber + ":");
-						printAdjList(graphInfo);
-						System.out.println();
-						System.out.println("DFS Route " + graphNumber + ":");
-						DFS(graphInfo);
-						System.out.println();
-						System.out.println();
-						System.out.println("BFS Route " + graphNumber + ":");
-						BFS(graphInfo, graphInfo.get(0));
-						System.out.println();
-						System.out.println();
-						
-						//Toss the current graph
-						graphInfo.clear();
-						
-						//Make a space, duh
-						System.out.println();
-					}//else if
-				}//while
-				
-				//The file will not encounter another 'new' statement; so,
-				//the last graph in the file is handled here after the above
-				//while-loop ends. The "Zork Graph" has its own methods since
-				//it begins at vertex '0'.
-				graphNumber++;
-				System.out.println("Matrix " + graphNumber + ":");
-				printZorkMatrix(graphInfo);
-				System.out.println();
-				System.out.println("Adjacency List " + graphNumber + ":");
-				printAdjList(graphInfo);
-				System.out.println();
-				System.out.println("DFS Route " + graphNumber + ":");
-				zorkDFS(graphInfo);
-				System.out.println();
-				System.out.println();
-				System.out.println("BFS Route " + graphNumber + ":");
-				zorkBFS(graphInfo, graphInfo.get(0));
-				System.out.println();
-				graphInfo.clear();
-				
-				//Close the file Scanner
-				graphFile.close();
-			}//try
-			//Catch statement gives a nicer error if the program crashes
-			catch(Exception ex) {
-				System.out.println("Oops, something went wrong: " + ex);
-			}//catch
+					//Graph number is used for formatting and also to see
+					//if the current graph is the "Zork Graph" since it
+					//requires special treatment.
+					graphNumber++;
+					
+					System.out.println("Matrix " + graphNumber + ":");
+					printMatrix(graphInfo);
+					System.out.println();
+					System.out.println("Adjacency List " + 
+					graphNumber + ":");
+					printAdjList(graphInfo);
+					System.out.println();
+					System.out.println("DFS Route " + graphNumber + ":");
+					DFS(graphInfo);
+					System.out.println();
+					System.out.println();
+					System.out.println("BFS Route " + graphNumber + ":");
+					BFS(graphInfo, graphInfo.get(0));
+					System.out.println();
+					System.out.println();
+					
+					//Toss the current graph
+					graphInfo.clear();
+					
+					//Make a space, duh
+					System.out.println();
+				}//else if
+			}//while
 			
-			//Make space between the graphing outputs and the binary tree
-			//actions which are handled below.
+			//The file will not encounter another 'new' statement; so,
+			//the last graph in the file is handled here after the above
+			//while-loop ends. The "Zork Graph" has its own methods since
+			//it begins at vertex '0'.
+			graphNumber++;
+			System.out.println("Matrix " + graphNumber + ":");
+			printZorkMatrix(graphInfo);
+			System.out.println();
+			System.out.println("Adjacency List " + graphNumber + ":");
+			printAdjList(graphInfo);
+			System.out.println();
+			System.out.println("DFS Route " + graphNumber + ":");
+			zorkDFS(graphInfo);
 			System.out.println();
 			System.out.println();
+			System.out.println("BFS Route " + graphNumber + ":");
+			zorkBFS(graphInfo, graphInfo.get(0));
+			System.out.println();
+			graphInfo.clear();
 			
-			//Variables for reading file
-			fileName = "magicItems.txt";
-			File magicFile = new File(fileName);
-			line = null;
-			String[] itemsArray = new String[666];
-			int counter = 0;
-					
-			//Read "magic items" into the array
-			try	{
-				//Create a Scanner object to read from the file
-				Scanner magicItems = new Scanner(magicFile);
-				//While loop to read lines until the file doesn't have any left
-				while(magicItems.hasNext())	{
-					//Read the next line of input and store it
-					line = magicItems.nextLine();	
-					//Add the stored String as a lower-case into the array
-					itemsArray[counter] = line.toLowerCase();
-					//Increment the counter to find length of the array
-					//for later use
-					counter++;
-				}//while
-				//Close the file Scanner
-				magicItems.close();
-			}//try
-			//Catch statement gives a nicer error if the program crashes
-			catch(Exception ex) {
-				System.out.println("Oops, something went wrong: " + ex);
-			}//catch
-			
-			//Create an instance of a binary tree to fill and traverse.
-			BinaryTreeRavosa greatDekuTree = new BinaryTreeRavosa();
-			
-			//Make a node to carry each magic item and call treeInsert to
-			//sauce it right into the Great Deku Tree.
-			for (i = 0; i < itemsArray.length; i++) {
-				NodeRavosa newGuy = new NodeRavosa(itemsArray[i]);
-				greatDekuTree.treeInsert(newGuy);
-			}//for
-			
-			//This variable allows a random number to be generated
-			Random rand = new Random();
-			
-			//This variable will retain the most recent random number generated
-			int randomValue = 0;
-			
-			//This array will store values of the 42 random indexes generated
-			String[] randomsArray = new String[42];
-			
-			//Based on the random value generated, find the string at the index
-			//of the random value in a sorted copy of itemsArray. Put that
-			//string into the randomsArray to store values that will be
-			//searched for.
-			for (i = 0; i < randomsArray.length; i++) {
-				randomValue = rand.nextInt(666);
-				randomsArray[i] = itemsArray[randomValue];
-			}//for
-			
-			System.out.println
-				("Searching for Random Strings in Binary Tree: ");
-			
-			//For every value in the random items array...
-			for (i = 0; i < randomsArray.length; i++) {
-				//Start at the Deku tree's root and call treeSearch
-				NodeRavosa x = greatDekuTree.getRoot();
-				treeSearch(x, randomsArray[i]);
-				//Add the number of comparisons (counted in the search method)
-				//to the total sum.
-				sum = sum + comparisons;
-				//Print each search's comparisons.
-				System.out.println("Comparisons in search #" + (i+1) + ": "
-				+ sum);
-				//Add the sum to the average to be divided later, and reset
-				//the sum and comparisons.
-				avg += sum;
-				sum = 0;
-				comparisons = 0;
-			}//for
-			
-			//Divide the sum by 42 and print the average.
-			avg = avg / randomsArray.length;
-			System.out.println("Average comparisons: " + avg);
+			//Close the file Scanner
+			graphFile.close();
+		}//try
+		//Catch statement gives a nicer error if the program crashes
+		catch(Exception ex) {
+			System.out.println("Oops, something went wrong: " + ex);
+		}//catch
+		
+		//Make space between the graphing outputs and the binary tree
+		//actions which are handled below.
+		System.out.println();
+		System.out.println();
+		
+//-----------------------------DONE WITH GRAPHS--------------------------------
+		
+//---------------------------READ IN MAGIC ITEMS-------------------------------
+		
+		//Variables for reading file
+		fileName = "magicItems.txt";
+		File magicFile = new File(fileName);
+		line = null;
+		String[] itemsArray = new String[666];
+		int counter = 0;
+				
+		//Read "magic items" into the array
+		try	{
+			//Create a Scanner object to read from the file
+			Scanner magicItems = new Scanner(magicFile);
+			//While loop to read lines until the file doesn't have any left
+			while(magicItems.hasNext())	{
+				//Read the next line of input and store it
+				line = magicItems.nextLine();	
+				//Add the stored String as a lower-case into the array
+				itemsArray[counter] = line.toLowerCase();
+				//Increment the counter to find length of the array
+				//for later use
+				counter++;
+			}//while
+			//Close the file Scanner
+			magicItems.close();
+		}//try
+		//Catch statement gives a nicer error if the program crashes
+		catch(Exception ex) {
+			System.out.println("Oops, something went wrong: " + ex);
+		}//catch
+		
+		//Create an instance of a binary tree to fill and traverse.
+		BinaryTreeRavosa greatDekuTree = new BinaryTreeRavosa();
+		
+		//Make a node to carry each magic item and call treeInsert to
+		//sauce it right into the Great Deku Tree.
+		for (i = 0; i < itemsArray.length; i++) {
+			NodeRavosa newGuy = new NodeRavosa(itemsArray[i]);
+			greatDekuTree.treeInsert(newGuy);
+		}//for
+		
+		//This variable allows a random number to be generated
+		Random rand = new Random();
+		
+		//This variable will retain the most recent random number generated
+		int randomValue = 0;
+		
+		//This array will store values of the 42 random indexes generated
+		String[] randomsArray = new String[42];
+		
+		//Based on the random value generated, find the string at the index
+		//of the random value in a sorted copy of itemsArray. Put that
+		//string into the randomsArray to store values that will be
+		//searched for.
+		for (i = 0; i < randomsArray.length; i++) {
+			randomValue = rand.nextInt(666);
+			randomsArray[i] = itemsArray[randomValue];
+		}//for
+		
+		System.out.println
+			("Searching for Random Strings in Binary Tree: ");
+		
+		//For every value in the random items array...
+		for (i = 0; i < randomsArray.length; i++) {
+			//Start at the Deku tree's root and call treeSearch
+			NodeRavosa x = greatDekuTree.getRoot();
+			treeSearch(x, randomsArray[i]);
+			//Add the number of comparisons (counted in the search method)
+			//to the total sum.
+			sum = sum + comparisons;
+			//Print each search's comparisons.
+			System.out.println("Comparisons in search #" + (i+1) + ": "
+			+ sum);
+			//Add the sum to the average to be divided later, and reset
+			//the sum and comparisons.
+			avg += sum;
+			sum = 0;
+			comparisons = 0;
+		}//for
+		
+		//Divide the sum by 42 and print the average.
+		avg = avg / randomsArray.length;
+		System.out.println("Average comparisons: " + avg);
 	}//main
 	
 	public static void printMatrix(ArrayList<VertexRavosa> matrixInfo) {
