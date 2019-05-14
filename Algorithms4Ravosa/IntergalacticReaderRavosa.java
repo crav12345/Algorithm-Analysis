@@ -18,6 +18,7 @@ public class IntergalacticReaderRavosa {
 	
 	//Public variables
 	public static int graphNumber = 0;
+	public static ArrayList<Integer> parents = new ArrayList<Integer>();
 
 	public static void main(String[] args) {
 		//Variables for reading the file
@@ -47,6 +48,7 @@ public class IntergalacticReaderRavosa {
 					vertex = graphFile.nextInt();
 					VertexRavosa thisVertex = new VertexRavosa(vertex);
 					graphVertices.add(thisVertex);
+					parents.add(thisVertex.getVID());
 				}//if
 				else if (line.equals("edge")) {
 					int startVID = graphFile.nextInt();
@@ -96,6 +98,7 @@ public class IntergalacticReaderRavosa {
 					//Toss the current graph
 					graphVertices.clear();
 					graphEdges.clear();
+					parents.clear();
 					
 					//Make a space
 					System.out.println();
@@ -121,6 +124,7 @@ public class IntergalacticReaderRavosa {
 			//Toss the current graph
 			graphVertices.clear();
 			graphEdges.clear();
+			parents.clear();
 			
 			//Make a space
 			System.out.println();
@@ -213,6 +217,12 @@ public class IntergalacticReaderRavosa {
 				return false;
 			}//if
 		}//for
+		
+		for (int i = 1; i < graphVertices.size(); i++) {
+			System.out.print("Path is [ ");
+			printPath(parents, i);
+			System.out.println(" ]");
+		}//for
 		return true;
 	}//bellmanFord
 	
@@ -231,7 +241,7 @@ public class IntergalacticReaderRavosa {
 		if (v.getBound() > (u.getBound() + weight)) {
 			v.setBound(u.getBound() + weight);
 			v.setPrevious(u);
-			//System.out.println(v.getVID());
+			parents.set(v.getVID()-1, u.getVID());
 		}//if
 	}//relax
 	
@@ -240,4 +250,11 @@ public class IntergalacticReaderRavosa {
 			System.out.println(source.getVID() + " --> " + vertices.get(i).getVID() + " cost is " + vertices.get(i).getBound() + "; path: ");
 		}//for
 	}//printResults
+	
+	public static void printPath(ArrayList<Integer> theParents, int v) {
+		if (v<0)
+			return;
+		printPath(theParents, theParents.get(v));
+		System.out.print(v + " ");
+	}//printPath
 }//IntergalacticReaderRavosa
