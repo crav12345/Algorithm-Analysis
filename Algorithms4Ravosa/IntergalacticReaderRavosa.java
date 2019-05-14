@@ -90,8 +90,9 @@ public class IntergalacticReaderRavosa {
 					graphNumber + ":");
 					printAdjList(graphVertices);
 					System.out.println();
-					System.out.println("Path " + graphNumber + ":");
+					System.out.println("Graph " + graphNumber + ":");
 					bellmanFord(graphVertices, graphEdges, graphVertices.get(0));
+					printResults(graphVertices, graphEdges, graphVertices.get(0));
 					//Toss the current graph
 					graphVertices.clear();
 					graphEdges.clear();
@@ -105,13 +106,18 @@ public class IntergalacticReaderRavosa {
 			//the last graph in the file is handled here after the above
 			//while-loop ends.
 			graphNumber++;
+			
 			System.out.println();
-			System.out.println("Adjacency List " + 
-			graphNumber + ":");
+			
+			System.out.println("Adjacency List " + graphNumber + ":");
 			printAdjList(graphVertices);
+			
 			System.out.println();
-			System.out.println("Path " + graphNumber + ":");
+			
+			System.out.println("Graph " + graphNumber + ":");
 			bellmanFord(graphVertices, graphEdges, graphVertices.get(0));
+			printResults(graphVertices, graphEdges, graphVertices.get(0));
+			
 			//Toss the current graph
 			graphVertices.clear();
 			graphEdges.clear();
@@ -195,7 +201,6 @@ public class IntergalacticReaderRavosa {
 		
 	//Don't take in weight because you keep track of it in the graph
 	public static boolean bellmanFord(ArrayList<VertexRavosa> graphVertices, ArrayList<EdgeRavosa> graphEdges, VertexRavosa source) {
-		boolean ans = true;
 		initializeSingleSource(graphVertices, source);
 		for (int i = 1; i < graphVertices.size(); i++) {
 			for (int j = 0; j < graphEdges.size(); j++) {
@@ -204,12 +209,11 @@ public class IntergalacticReaderRavosa {
 		}//for
 		for (int j = 0; j < graphEdges.size(); j++) {
 			if (graphEdges.get(j).getEndVertex().getBound() > (graphEdges.get(j).getStartVertex().getBound() + graphEdges.get(j).getWeight())) {
-				ans = false;
 				System.out.println("Graph contains negative weight cycle.");
+				return false;
 			}//if
 		}//for
-		System.out.println("You didn't crash, yayyyy!");
-		return ans;
+		return true;
 	}//bellmanFord
 	
 	public static void initializeSingleSource(ArrayList<VertexRavosa> graphVertices, VertexRavosa source) {
@@ -230,4 +234,10 @@ public class IntergalacticReaderRavosa {
 			//System.out.println(v.getVID());
 		}//if
 	}//relax
+	
+	public static void printResults(ArrayList<VertexRavosa> vertices, ArrayList<EdgeRavosa> edges, VertexRavosa source) {
+		for (int i = 1; i < vertices.size(); i++) {
+			System.out.println(source.getVID() + " --> " + vertices.get(i).getVID() + " cost is " + vertices.get(i).getBound() + "; path: ");
+		}//for
+	}//printResults
 }//IntergalacticReaderRavosa
