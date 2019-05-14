@@ -13,29 +13,29 @@
 
 public class EdgeRavosa {
 	//Declare necessary variables for VertexRavosa objects
-	private VertexRavosa myStartVertex;
-	private VertexRavosa myEndVertex;
+	private int myStartVertex;
+	private int myEndVertex;
 	private int myWeight;
 	
 	//Initialize variables with constructors
 	public EdgeRavosa() {
-		myStartVertex = null;
-		myEndVertex = null;
+		myStartVertex = -1;
+		myEndVertex = -1;
 		myWeight = 0;
 	}//null constructor
 	
-	public EdgeRavosa(VertexRavosa newStart, VertexRavosa newEnd, int newWeight) {
+	public EdgeRavosa(int newStart, int newEnd, int newWeight) {
 		myStartVertex = newStart;
 		myEndVertex = newEnd;
 		myWeight = newWeight;
 	}//full constructor
 	
 	//Getters and setters
-	public VertexRavosa getStartVertex() {
+	public int getStartVertex() {
 		return myStartVertex;
 	}//getStartVertex
 	
-	public VertexRavosa getEndVertex() {
+	public int getEndVertex() {
 		return myEndVertex;
 	}//getEndVertex
 	
@@ -43,11 +43,11 @@ public class EdgeRavosa {
 		return myWeight;
 	}//getWeight
 	
-	public void setStartVertex(VertexRavosa newStart) {
+	public void setStartVertex(int newStart) {
 		myStartVertex = newStart;
 	}//setStartVertex
 	
-	public void setEndVertex(VertexRavosa newEnd) {
+	public void setEndVertex(int newEnd) {
 		myEndVertex = newEnd;
 	}//setEndVertex
 	
