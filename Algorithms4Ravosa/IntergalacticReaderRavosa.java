@@ -23,7 +23,8 @@ public class IntergalacticReaderRavosa {
 		//Variables for reading the file
 		String fileName = "graphInfo.txt";
 		File myFile = new File(fileName);
-		ArrayList<VertexRavosa> graphInfo = new ArrayList<VertexRavosa>();
+		ArrayList<VertexRavosa> graphVertices = new ArrayList<VertexRavosa>();
+		ArrayList<EdgeRavosa> graphEdges = new ArrayList<EdgeRavosa>();
 		String line = null;
 		int i = 0;
 		int vertex;
@@ -45,7 +46,7 @@ public class IntergalacticReaderRavosa {
 					//Add the vertex to the graph arraylist
 					vertex = graphFile.nextInt();
 					VertexRavosa thisVertex = new VertexRavosa(vertex);
-					graphInfo.add(thisVertex);
+					graphVertices.add(thisVertex);
 				}//if
 				else if (line.equals("edge")) {
 					int startVID = graphFile.nextInt();
@@ -55,20 +56,22 @@ public class IntergalacticReaderRavosa {
 					VertexRavosa endVertex = new VertexRavosa(endVID);
 					line = graphFile.next();
 					int weight = Integer.parseInt(line);
+					EdgeRavosa thisEdge = new EdgeRavosa(startVertex, endVertex, weight);
+					graphEdges.add(thisEdge);
 					
 					//For every vertex in the graph information, add its
 					//edges to the corresponding value in the graph info
 					//list. This representation is directed so values
 					//connect one way to each other.
-					for(i = 0; i < graphInfo.size(); i++) {
-						if (graphInfo.get(i).getVID() == startVertex
+					for(i = 0; i < graphVertices.size(); i++) {
+						if (graphVertices.get(i).getVID() == startVertex
 						.getVID()) {
-							graphInfo.get(i).addOutgoingEdge
+							graphVertices.get(i).addOutgoingEdge
 							(endVertex, weight);
 						}//if
-						else if (graphInfo.get(i).getVID() == endVertex
+						else if (graphVertices.get(i).getVID() == endVertex
 						.getVID()) {
-							graphInfo.get(i).addIncomingEdge
+							graphVertices.get(i).addIncomingEdge
 							(startVertex, weight);
 						}//else if
 					}//for
@@ -76,17 +79,20 @@ public class IntergalacticReaderRavosa {
 				//If a new graph is being made, print the results and dump
 				//the current instance of the graph list. The condition
 				//will ignore the first 'new'.
-				else if ((line.equals("new")) && (graphInfo.isEmpty() ==
+				else if ((line.equals("new")) && (graphVertices.isEmpty() ==
 				false)) {
 					
 					//Graph number is used for formatting.
 					graphNumber++;
 					System.out.println("Adjacency List " + 
 					graphNumber + ":");
-					printAdjList(graphInfo);
+					printAdjList(graphVertices);
 					System.out.println();
+					System.out.println("Path " + graphNumber + ":");
+					bellmanFord(graphVertices, graphEdges, graphVertices.get(0));
 					//Toss the current graph
-					graphInfo.clear();
+					graphVertices.clear();
+					graphEdges.clear();
 					
 					//Make a space
 					System.out.println();
@@ -99,10 +105,13 @@ public class IntergalacticReaderRavosa {
 			graphNumber++;
 			System.out.println("Adjacency List " + 
 			graphNumber + ":");
-			printAdjList(graphInfo);
+			printAdjList(graphVertices);
 			System.out.println();
+			System.out.println("Path " + graphNumber + ":");
+			bellmanFord(graphVertices, graphEdges, graphVertices.get(0));
 			//Toss the current graph
-			graphInfo.clear();
+			graphVertices.clear();
+			graphEdges.clear();
 			
 			//Make a space
 			System.out.println();
@@ -148,4 +157,41 @@ public class IntergalacticReaderRavosa {
 			}//else
 		}//for
 	}//printAdjList
+		
+	//Don't take in weight because you keep track of it in the graph
+	public static boolean bellmanFord(ArrayList<VertexRavosa> graphVertices, ArrayList<EdgeRavosa> graphEdges, VertexRavosa source) {
+		boolean ans = true;
+		initializeSingleSource(graphVertices, source);
+		for (int i = 1; i < graphVertices.size(); i++) {
+			for (int j = 0; j < graphEdges.size(); j++) {
+				relax(graphEdges.get(j));
+			}//for
+		}//for
+		for (int j = 0; j < graphEdges.size(); j++) {
+			if (graphEdges.get(j).getEndVertex().getBound() > (graphEdges.get(j).getStartVertex().getBound() + graphEdges.get(j).getWeight())) {
+				ans = false;
+				System.out.println("Graph contains negative weight cycle.");
+			}//if
+		}//for
+		System.out.println("You didn't crash, yayyyy!");
+		return ans;
+	}//bellmanFord
+	
+	public static void initializeSingleSource(ArrayList<VertexRavosa> graphVertices, VertexRavosa source) {
+		for (int i = 0; i < graphVertices.size(); i++) {
+			graphVertices.get(i).setPrevious(null);
+			graphVertices.get(i).setBound(Integer.MAX_VALUE);
+		}//for
+		source.setBound(0);
+	}//initializeSingleSource
+	
+	public static void relax(EdgeRavosa anxiousEdge) {
+		VertexRavosa u = anxiousEdge.getStartVertex();
+		VertexRavosa v = anxiousEdge.getEndVertex();
+		int weight = anxiousEdge.getWeight();
+		if (v.getBound() > (u.getBound() + weight)) {
+			v.setBound(u.getBound() + weight);
+			v.setPrevious(u);
+		}//if
+	}//relax
 }//IntergalacticReaderRavosa

@@ -20,7 +20,7 @@ public class VertexRavosa {
 	private ArrayList<VertexRavosa> myIncomingEdges;
 	private ArrayList<Integer> myOutgoingWeights;
 	private ArrayList<Integer> myIncomingWeights;
-	private String myColor;
+	private int myBound;
 	private VertexRavosa myPrevious;
 	private VertexRavosa myNext;
 	
@@ -31,7 +31,7 @@ public class VertexRavosa {
 		myIncomingEdges = null;
 		myOutgoingWeights = null;
 		myIncomingWeights = null;
-		myColor = "";
+		myBound = 0;
 		myPrevious = null;
 		myNext = null;
 	}//null constructor
@@ -42,7 +42,7 @@ public class VertexRavosa {
 		myIncomingEdges = new ArrayList<VertexRavosa>();
 		myOutgoingWeights = new ArrayList<Integer>();
 		myIncomingWeights = new ArrayList<Integer>();
-		myColor = "WHITE";
+		myBound = 0;
 		myPrevious = null;
 		myNext = null;
 	}//full constructor
@@ -69,8 +69,8 @@ public class VertexRavosa {
 		return myIncomingWeights;
 	}//incomingWeights
 	
-	public String getColor() {
-		return myColor;
+	public int getBound() {
+		return myBound;
 	}//getColor
 	
 	public VertexRavosa getPrevious() {
@@ -104,8 +104,8 @@ public class VertexRavosa {
 		return found;
 	}//sharesEdge
 		
-	public void setColor(String newColor) {
-		myColor = newColor;
+	public void setBound(int newBound) {
+		myBound = newBound;
 	}//setColor
 	
 	public void setPrevious(VertexRavosa newPrevious) {
