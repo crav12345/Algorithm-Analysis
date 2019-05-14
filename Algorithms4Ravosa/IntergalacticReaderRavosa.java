@@ -50,13 +50,14 @@ public class IntergalacticReaderRavosa {
 				}//if
 				else if (line.equals("edge")) {
 					int startVID = graphFile.nextInt();
-					VertexRavosa startVertex = new VertexRavosa(startVID);
+					VertexRavosa startVertex = graphVertices.get(startVID-1);
 					line = graphFile.next();
 					int endVID = graphFile.nextInt();
-					VertexRavosa endVertex = new VertexRavosa(endVID);
+					VertexRavosa endVertex = graphVertices.get(endVID-1);
 					line = graphFile.next();
 					int weight = Integer.parseInt(line);
 					EdgeRavosa thisEdge = new EdgeRavosa(startVertex, endVertex, weight);
+					System.out.println("Edge Start: " + thisEdge.getStartVertex().getVID() + " Weight: " + thisEdge.getWeight() + " End: " + thisEdge.getEndVertex().getVID());
 					graphEdges.add(thisEdge);
 					
 					//For every vertex in the graph information, add its
@@ -84,6 +85,7 @@ public class IntergalacticReaderRavosa {
 					
 					//Graph number is used for formatting.
 					graphNumber++;
+					System.out.println();
 					System.out.println("Adjacency List " + 
 					graphNumber + ":");
 					printAdjList(graphVertices);
@@ -103,6 +105,7 @@ public class IntergalacticReaderRavosa {
 			//the last graph in the file is handled here after the above
 			//while-loop ends.
 			graphNumber++;
+			System.out.println();
 			System.out.println("Adjacency List " + 
 			graphNumber + ":");
 			printAdjList(graphVertices);
@@ -124,9 +127,41 @@ public class IntergalacticReaderRavosa {
 			System.out.println("Oops, something went wrong: " + ex);
 		}//catch
 		
+//-----------------------------DONE WITH GRAPHS--------------------------------
+		
+//---------------------------THE SPICE MUST FLOW-------------------------------
+
 		//Make space after the program is finished using the graphs
 		System.out.println();
 		System.out.println();
+		
+		//Variables for reading file
+		fileName = "spice.txt";
+		File spiceFile = new File(fileName);
+		line = null;
+		ArrayList<SpiceRavosa> spiceList = new ArrayList<SpiceRavosa>();
+
+		
+		//Read "magic items" into the array
+		try	{
+			//Create a Scanner object to read from the file
+			Scanner spices = new Scanner(spiceFile);
+			//While loop to read lines until the file doesn't have any left
+			while(spices.hasNext())	{
+				line = spices.next();
+				
+				if (line.equals("name")) {
+					
+					//SpiceRavosa thisSpice = new SpiceRavosa(spiceName, spiceUnitValue, spiceAbundance);
+					//spiceList.add(thisSpice);
+				}//if
+			}//while
+			spices.close();
+		}//try
+		catch(Exception ex) {
+			System.out.println("Oops, something went wrong: " + ex);
+		}//catch
+		
 	}//Main
 	
 	public static void printAdjList(ArrayList<VertexRavosa> adjListInfo) {
@@ -192,6 +227,7 @@ public class IntergalacticReaderRavosa {
 		if (v.getBound() > (u.getBound() + weight)) {
 			v.setBound(u.getBound() + weight);
 			v.setPrevious(u);
+			//System.out.println(v.getVID());
 		}//if
 	}//relax
 }//IntergalacticReaderRavosa
