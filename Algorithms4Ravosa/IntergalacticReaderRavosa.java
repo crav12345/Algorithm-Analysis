@@ -117,9 +117,6 @@ public class IntergalacticReaderRavosa {
 				System.out.println("Graph contains negative weight cycle!");
 		}//for all edges
 		
-		//Print distance from the source to each vertex
-		//printDist(distance, vertices);
-		
 		for (int i=1; i<vertices; i++) {
 			System.out.print("-- " + 1 + " --> " + (i+1) + " cost is " + distance[i] + "; path: 1 --> ");
 			printPath(previous, i);
@@ -142,7 +139,7 @@ public class IntergalacticReaderRavosa {
 			return;
 		
 		printPath(parents, parents[vertex]);
-		System.out.print(vertex+1 + " --> ");
+		System.out.print(vertex+1 + " ");
 	}//printPath
 	
 }//IntergalacticReaderRavosa

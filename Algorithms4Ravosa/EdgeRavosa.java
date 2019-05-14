@@ -54,4 +54,5 @@ public class EdgeRavosa {
 	public void setWeight(int newWeight) {
 		myWeight = newWeight;
 	}//setWeight
+	
 }//EdgeRavosa
