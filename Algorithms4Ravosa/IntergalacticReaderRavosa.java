@@ -16,6 +16,8 @@ import java.util.*;
 
 public class IntergalacticReaderRavosa {
 	
+	public static int formatter = 0;
+	
 	public static void main(String[] args) {
 		//Variables to read file
 		String fileName = "graphInfo.txt";
@@ -119,27 +121,22 @@ public class IntergalacticReaderRavosa {
 		
 		for (int i=1; i<vertices; i++) {
 			System.out.print("-- " + 1 + " --> " + (i+1) + " cost is " + distance[i] + "; path: 1 --> ");
+			formatter = i+1;
 			printPath(previous, i);
 			System.out.println();
 		}//for # of vertices
 		
-	}//bellmanFord
-	
-	
-	
-	public static void printDist(int distance[], int vertices) {
-		for (int i=1; i<vertices; i++)
-			System.out.println("Vertex " + i + " distance from source " + distance[i]);
-	}//print
-	
-	
+	}//bellmanFord	
 	
 	public static void printPath(int parents[], int vertex) {
 		if (vertex==0)
 			return;
 		
 		printPath(parents, parents[vertex]);
-		System.out.print(vertex+1 + " ");
+		if (vertex+1 != formatter)
+			System.out.print(vertex+1 + " --> ");
+		else
+			System.out.print(vertex+1);
 	}//printPath
 	
 }//IntergalacticReaderRavosa
