@@ -167,11 +167,9 @@ public class IntergalacticReaderRavosa {
 		//Now that the spices and capacities of the knapsacks have been read,
 		//all of the logic to resolve the fractional knapsack problem will
 		//occur below.
-		
 		insertionSort(spices);
-		for (int i=0;i<spices.size();i++)
-			System.out.print(spices.get(i).getUnitValue());
-		
+		for (int i = 0; i < spices.size(); i++)
+			System.out.println(spices.get(i).getUnitValue());
 	}//main
 	
 	
