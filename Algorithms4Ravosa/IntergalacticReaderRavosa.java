@@ -170,6 +170,13 @@ public class IntergalacticReaderRavosa {
 		insertionSort(spices);
 		for (int i = 0; i < spices.size(); i++)
 			System.out.println(spices.get(i).getUnitValue());
+		System.out.println();
+		
+		for (int i = 0; i < knapsackCapacities.size(); i++) {
+			ArrayList<SpiceRavosa> copy = new ArrayList<>(spices);
+			fill(knapsackCapacities.get(i), copy);
+		}//for each instance of knapsack
+		
 	}//main
 	
 	
@@ -299,7 +306,7 @@ public class IntergalacticReaderRavosa {
 			//This loop runs to see if key needs to be swapped with any value
 			//in an index beneath it. If the value at index j is supposed to
 			//come after key alphabetically, the values will swap.
-			while (j >= 0 && (myArray.get(j).getUnitValue() > key)) {
+			while (j >= 0 && (myArray.get(j).getUnitValue() < key)) {
 				myArray.get(j + 1).setUnitValue(myArray.get(j).getUnitValue());
 				j = j - 1;
 				comparisons++;
@@ -310,5 +317,26 @@ public class IntergalacticReaderRavosa {
 		//Print result
 		System.out.println("Insertion Sort: " + comparisons);
 	}//insertionSort
+	
+	public static void fill(int thisKnapsack, ArrayList<SpiceRavosa> theSpices) {
+		int spiceIndex = 0;
+		SpiceRavosa currentSpice = theSpices.get(spiceIndex); 
+		double fillCost = 0;
+		while (currentSpice != null) {
+			while(currentSpice.getQuantity() != 0) {
+				//Scoop into thisKnapsack
+				thisKnapsack--;
+				currentSpice.setQuantity(currentSpice.getQuantity()-1);
+				fillCost += currentSpice.getUnitValue();
+			}//while
+			spiceIndex++;
+			if (spiceIndex < theSpices.size())
+				currentSpice = theSpices.get(spiceIndex);
+			else
+				currentSpice = null;
+		}//while
+		//Print results
+		System.out.println(fillCost);
+	}//fill
 	
 }//IntergalacticReaderRavosa
