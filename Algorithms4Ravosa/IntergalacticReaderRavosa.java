@@ -109,9 +109,15 @@ public class IntergalacticReaderRavosa {
 		//-------------------------DONE WITH GRAPHS----------------------------
 		
 		
+		
+		
+		
 		//-----------------------THE SPICE MUST FLOW---------------------------
 		
-		//Spices go here
+		//Now we can read in the spice file with these variables!
+		fileName = "spice.txt";
+		myFile = new File(fileName);
+		line = null;
 		
 	}//main
 	
