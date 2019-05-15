@@ -103,21 +103,74 @@ public class IntergalacticReaderRavosa {
 		//The catch will let us know if the program crashes and will print the
 		//error that occurred.
 		catch(Exception ex) {
-			System.out.println("Oops, something went wrong: " + ex);
+			System.out.println("Oops, something went wrong with the graphs: " + ex);
 		}//catch
 		
 		//-------------------------DONE WITH GRAPHS----------------------------
 		
 		
-		
+		System.out.println();
+		System.out.println();
 		
 		
 		//-----------------------THE SPICE MUST FLOW---------------------------
+		
+		System.out.println("----------------THE SPICES-----------------");
 		
 		//Now we can read in the spice file with these variables!
 		fileName = "spice.txt";
 		myFile = new File(fileName);
 		line = null;
+		ArrayList<SpiceRavosa> spices = new ArrayList<SpiceRavosa>();
+		ArrayList<Integer> knapsackCapacities = new ArrayList<Integer>();
+		
+		try {
+			Scanner spiceFile = new Scanner(myFile);
+			
+			while (spiceFile.hasNext()) {
+				line = spiceFile.next();
+				
+				if (line.equals("name")) {
+					//Create spice and add it to the spices array-list
+					line = spiceFile.next();
+					String spiceName = spiceFile.next();
+					line = spiceFile.next();
+					line = spiceFile.next();
+					double spiceUnitValue = Double.parseDouble(spiceFile.next());
+					line = spiceFile.next();
+					line = spiceFile.next();
+					int spiceQuantity = spiceFile.nextInt();
+					System.out.println("Name: " + spiceName + "; Value " + spiceUnitValue + "; Qty: " + spiceQuantity);
+					SpiceRavosa newSpice = new SpiceRavosa(spiceName, spiceUnitValue, spiceQuantity);
+					spices.add(newSpice);
+				}//if 'name'
+				
+				else if (line.equals("capacity")) {
+					//Create knapsack and add it to the array-list that records
+					//knapsack capacities.
+					line = spiceFile.next();
+					int knapsackCapacity = spiceFile.nextInt();
+					knapsackCapacities.add(knapsackCapacity);
+				}//else if 'capacity'
+			}//while
+			
+			System.out.println(knapsackCapacities);
+			System.out.println("-------------------------------------------");
+			
+			spiceFile.close();
+			
+		}//try
+		catch(Exception ex) {
+			System.out.println("Oops, something went wrong with the spices: " + ex);
+		}//catch
+		
+		//Now that the spices and capacities of the knapsacks have been read,
+		//all of the logic to resolve the fractional knapsack problem will
+		//occur below.
+		
+		insertionSort(spices);
+		for (int i=0;i<spices.size();i++)
+			System.out.print(spices.get(i).getUnitValue());
 		
 	}//main
 	
@@ -229,5 +282,35 @@ public class IntergalacticReaderRavosa {
 		else
 			System.out.print(vertex+1);
 	}//printPath
+	
+	public static void insertionSort(ArrayList<SpiceRavosa> myArray) {
+		int i = 1;
+		int length = myArray.size();
+		double key = 0.0;
+		int j = 0;
+		int comparisons = 0;
+		
+		for (i = 1; i < length; i++) {
+			//Key is used to expand the portion of the array the program is
+			//looking at.
+			key = myArray.get(i).getUnitValue();
+			
+			//J is used to refer to the index beneath the value of key
+			j = i - 1;
+			
+			//This loop runs to see if key needs to be swapped with any value
+			//in an index beneath it. If the value at index j is supposed to
+			//come after key alphabetically, the values will swap.
+			while (j >= 0 && (myArray.get(j).getUnitValue() > key)) {
+				myArray.get(j + 1).setUnitValue(myArray.get(j).getUnitValue());
+				j = j - 1;
+				comparisons++;
+			}//while
+			myArray.get(j + 1).setUnitValue(key);
+		}//for
+		
+		//Print result
+		System.out.println("Insertion Sort: " + comparisons);
+	}//insertionSort
 	
 }//IntergalacticReaderRavosa
