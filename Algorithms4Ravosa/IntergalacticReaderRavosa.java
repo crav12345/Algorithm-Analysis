@@ -122,7 +122,7 @@ public class IntergalacticReaderRavosa {
 		myFile = new File(fileName);
 		line = null;
 		ArrayList<SpiceRavosa> spices = new ArrayList<SpiceRavosa>();
-		ArrayList<Integer> knapsackCapacities = new ArrayList<Integer>();
+		ArrayList<KnapsackRavosa> knapsacks = new ArrayList<KnapsackRavosa>();
 		
 		try {
 			Scanner spiceFile = new Scanner(myFile);
@@ -136,12 +136,15 @@ public class IntergalacticReaderRavosa {
 					String spiceName = spiceFile.next();
 					line = spiceFile.next();
 					line = spiceFile.next();
-					double spiceUnitValue = Double.parseDouble(spiceFile.next());
+					double spiceUnitValue = Double.parseDouble
+							(spiceFile.next());
 					line = spiceFile.next();
 					line = spiceFile.next();
 					int spiceQuantity = spiceFile.nextInt();
-					System.out.println("Name: " + spiceName + "; Value " + spiceUnitValue + "; Qty: " + spiceQuantity);
-					SpiceRavosa newSpice = new SpiceRavosa(spiceName, spiceUnitValue, spiceQuantity);
+					System.out.println("Name: " + spiceName + "; Value " +
+							spiceUnitValue + "; Qty: " + spiceQuantity);
+					SpiceRavosa newSpice = new SpiceRavosa(spiceName, 
+							spiceUnitValue, spiceQuantity);
 					spices.add(newSpice);
 				}//if 'name'
 				
@@ -150,33 +153,40 @@ public class IntergalacticReaderRavosa {
 					//knapsack capacities.
 					line = spiceFile.next();
 					int knapsackCapacity = spiceFile.nextInt();
-					knapsackCapacities.add(knapsackCapacity);
+					KnapsackRavosa newKnapsack = 
+							new KnapsackRavosa(knapsackCapacity);
+					knapsacks.add(newKnapsack);
 				}//else if 'capacity'
 			}//while
 			
-			System.out.println(knapsackCapacities);
+			System.out.println("Knapsack capacities: ");
+			for (int i = 0; i < knapsacks.size(); i++)
+				System.out.println(knapsacks.get(i).getSpace() + ", ");
 			System.out.println("-------------------------------------------");
 			
 			spiceFile.close();
 			
 		}//try
 		catch(Exception ex) {
-			System.out.println("Oops, something went wrong with the spices: " + ex);
+			System.out.println(
+					"Oops, something went wrong with the spices: " + ex);
 		}//catch
 		
 		//Now that the spices and capacities of the knapsacks have been read,
 		//all of the logic to resolve the fractional knapsack problem will
 		//occur below.
 		insertionSort(spices);
-		for (int i = 0; i < spices.size(); i++)
-			System.out.println(spices.get(i).getUnitValue());
 		System.out.println();
 		
-		for (int i = 0; i < knapsackCapacities.size(); i++) {
+		//For each knapsack we've constructed, use a new copy of the array-list
+		//and call the fill() function
+		for (int i = 0; i < knapsacks.size(); i++) {
 			ArrayList<SpiceRavosa> copy = new ArrayList<>(spices);
-			fill(knapsackCapacities.get(i), copy);
-		}//for each instance of knapsack
-		
+			System.out.println("Knapsack " + (i+1) + ": ");
+			fill(knapsacks.get(i), copy);
+			System.out.println();
+			System.out.println();
+		}//for
 	}//main
 	
 	
@@ -318,25 +328,30 @@ public class IntergalacticReaderRavosa {
 		System.out.println("Insertion Sort: " + comparisons);
 	}//insertionSort
 	
-	public static void fill(int thisKnapsack, ArrayList<SpiceRavosa> theSpices) {
+	public static void fill(KnapsackRavosa k, ArrayList<SpiceRavosa>
+		theSpices) {
+		//Keep track of which spice we are evaluating with these variables
 		int spiceIndex = 0;
-		SpiceRavosa currentSpice = theSpices.get(spiceIndex); 
-		double fillCost = 0;
-		while (currentSpice != null) {
-			while(currentSpice.getQuantity() != 0) {
-				//Scoop into thisKnapsack
-				thisKnapsack--;
-				currentSpice.setQuantity(currentSpice.getQuantity()-1);
-				fillCost += currentSpice.getUnitValue();
+		String thisSpice = "";
+		
+		//While the current spice exists...
+		while (spiceIndex < theSpices.size()) {
+			//Find the name of the spice..
+			int counter = 0;
+			thisSpice = theSpices.get(3 - spiceIndex).getName();
+			//...and begin scooping it into the sack while there's room.
+			while (k.hasRoom(theSpices.get(spiceIndex))) {
+				k.scoop(theSpices.get(spiceIndex));
+				counter++;
 			}//while
+			//Finally, print the spice and how much we took before going onto
+			//the next spice.
+			System.out.print(thisSpice + ": " + counter + " ");
 			spiceIndex++;
-			if (spiceIndex < theSpices.size())
-				currentSpice = theSpices.get(spiceIndex);
-			else
-				currentSpice = null;
 		}//while
-		//Print results
-		System.out.println(fillCost);
+		//Print the total amount of space used.
+		System.out.println();
+		System.out.println("Total space used: " + k.getSpaceUsed());
 	}//fill
 	
 }//IntergalacticReaderRavosa

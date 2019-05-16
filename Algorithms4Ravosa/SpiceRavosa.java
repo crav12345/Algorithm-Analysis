@@ -15,17 +15,23 @@ public class SpiceRavosa {
 	private String myName;
 	private double myUnitValue;
 	private int myQuantity;
+	private SpiceRavosa myNext;
+	private SpiceRavosa myPrevious;
 	
 	public SpiceRavosa() {
 		myName = "";
 		myUnitValue = 0;
 		myQuantity = 0;
+		myNext = null;
+		myPrevious = null;
 	}//null constructor
 	
 	public SpiceRavosa(String newName, double newUnitValue, int newQuantity) {
 		myName = newName;
 		myUnitValue = newUnitValue;
 		myQuantity = newQuantity;
+		myNext = null;
+		myPrevious = null;
 	}//full constructor
 	
 	public String getName() {
@@ -40,6 +46,14 @@ public class SpiceRavosa {
 		return myQuantity;
 	}//getQuantity
 	
+	public SpiceRavosa getNext() {
+		return myNext;
+	}//getNext
+	
+	public SpiceRavosa getPrevious() {
+		return myPrevious;
+	}//getNext
+	
 	public void setName(String newName) {
 		myName = newName;
 	}//setName
@@ -51,5 +65,13 @@ public class SpiceRavosa {
 	public void setQuantity(int newQuantity) {
 		myQuantity = newQuantity;
 	}//setQuantity
+	
+	public void setNext(SpiceRavosa newNext) {
+		myNext = newNext;
+	}//setNext
+	
+	public void setPrevious(SpiceRavosa newPrevious) {
+		myPrevious = newPrevious;
+	}//setNext
 	
 }//SpiceRavosa
