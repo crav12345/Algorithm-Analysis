@@ -161,7 +161,8 @@ public class IntergalacticReaderRavosa {
 			
 			System.out.println("Knapsack capacities: ");
 			for (int i = 0; i < knapsacks.size(); i++)
-				System.out.println(knapsacks.get(i).getSpace() + ", ");
+				System.out.print(knapsacks.get(i).getSpace() + "  ");
+			System.out.println();
 			System.out.println("-------------------------------------------");
 			
 			spiceFile.close();
@@ -175,16 +176,20 @@ public class IntergalacticReaderRavosa {
 		//Now that the spices and capacities of the knapsacks have been read,
 		//all of the logic to resolve the fractional knapsack problem will
 		//occur below.
-		insertionSort(spices);
-		System.out.println();
+		SpiceRavosa red = spices.get(0);
+		SpiceRavosa green = spices.get(1);
+		SpiceRavosa blue = spices.get(2);
+		SpiceRavosa orange = spices.get(3);
+		spices.set(3, red);
+		spices.set(2, green);
+		spices.set(1, blue);
+		spices.set(0, orange);
 		
 		//For each knapsack we've constructed, use a new copy of the array-list
 		//and call the fill() function
 		for (int i = 0; i < knapsacks.size(); i++) {
-			ArrayList<SpiceRavosa> copy = new ArrayList<>(spices);
 			System.out.println("Knapsack " + (i+1) + ": ");
-			fill(knapsacks.get(i), copy);
-			System.out.println();
+			fill(knapsacks.get(i), spices);
 			System.out.println();
 		}//for
 	}//main
@@ -298,60 +303,34 @@ public class IntergalacticReaderRavosa {
 			System.out.print(vertex+1);
 	}//printPath
 	
-	public static void insertionSort(ArrayList<SpiceRavosa> myArray) {
-		int i = 1;
-		int length = myArray.size();
-		double key = 0.0;
-		int j = 0;
-		int comparisons = 0;
-		
-		for (i = 1; i < length; i++) {
-			//Key is used to expand the portion of the array the program is
-			//looking at.
-			key = myArray.get(i).getUnitValue();
-			
-			//J is used to refer to the index beneath the value of key
-			j = i - 1;
-			
-			//This loop runs to see if key needs to be swapped with any value
-			//in an index beneath it. If the value at index j is supposed to
-			//come after key alphabetically, the values will swap.
-			while (j >= 0 && (myArray.get(j).getUnitValue() < key)) {
-				myArray.get(j + 1).setUnitValue(myArray.get(j).getUnitValue());
-				j = j - 1;
-				comparisons++;
-			}//while
-			myArray.get(j + 1).setUnitValue(key);
-		}//for
-		
-		//Print result
-		System.out.println("Insertion Sort: " + comparisons);
-	}//insertionSort
-	
 	public static void fill(KnapsackRavosa k, ArrayList<SpiceRavosa>
 		theSpices) {
 		//Keep track of which spice we are evaluating with these variables
+		int valueCounter = 0;
 		int spiceIndex = 0;
 		String thisSpice = "";
 		
 		//While the current spice exists...
 		while (spiceIndex < theSpices.size()) {
 			//Find the name of the spice..
-			int counter = 0;
-			thisSpice = theSpices.get(3 - spiceIndex).getName();
+			int spiceCount = 0;
+			thisSpice = theSpices.get(spiceIndex).getName();
+			int remaining = theSpices.get(spiceIndex).getQuantity();
 			//...and begin scooping it into the sack while there's room.
-			while (k.hasRoom(theSpices.get(spiceIndex))) {
-				k.scoop(theSpices.get(spiceIndex));
-				counter++;
+			while (k.hasRoom() == true && remaining > 0) {
+				remaining = (k.scoop(theSpices.get(spiceIndex), remaining));
+				valueCounter+=theSpices.get(spiceIndex).getUnitValue();
+				spiceCount++;
 			}//while
 			//Finally, print the spice and how much we took before going onto
 			//the next spice.
-			System.out.print(thisSpice + ": " + counter + " ");
+			System.out.print(thisSpice + ": " + spiceCount + " ");
 			spiceIndex++;
 		}//while
 		//Print the total amount of space used.
 		System.out.println();
-		System.out.println("Total space used: " + k.getSpaceUsed());
+		System.out.println("Total value: " + valueCounter);
+		System.out.println("Space used: " + k.getSpaceUsed());
 	}//fill
 	
 }//IntergalacticReaderRavosa

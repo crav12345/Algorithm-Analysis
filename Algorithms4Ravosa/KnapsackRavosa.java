@@ -52,15 +52,17 @@ public class KnapsackRavosa {
 		spaceUsed = newSpaceUsed;
 	}//setSpace
 	
-	public boolean hasRoom(SpiceRavosa thisSpice) {
-		boolean ans = true;
-		if (remainingSpace - thisSpice.getUnitValue() < 0)
-			ans = false;
+	public boolean hasRoom() {
+		boolean ans = false;
+		if (remainingSpace > 0)
+			ans = true;
 		return ans;
 	}//hasRoom
 	
-	public void scoop(SpiceRavosa spice) {
-		spaceUsed = spaceUsed + spice.getUnitValue();
-		remainingSpace = space - spaceUsed;
+	public int scoop(SpiceRavosa spice, int r) {
+		spaceUsed++;
+		remainingSpace--;
+		r--;
+		return r;
 	}//scoop
 }//KnapsackRavosa
